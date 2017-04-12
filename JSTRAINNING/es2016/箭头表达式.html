@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	
+	<script>
+		
+		// 箭头表达式的主要本质:一是更简短的函数书写，二是对this、aruguments、super词法解析
+		
+//				var a = [
+//				"Hydrogen",
+//				"Helium",
+//				"Lithium",
+//				"Beryl­lium"
+//				];
+//				
+//				var a2 = a.map(function(s){return s.length});
+//				
+//				var a3 = a.map( s => s.length);
+//				
+//				console.log(a3);
+//				
+//				
+//				var adder = {
+//					base : 1,
+//					add : function(a){
+//						var f = v => v + this.base;
+//						return f(a);
+//					},
+//					addThruCall : function(a){
+//						var f = v => v + this.base;
+//						var b = {
+//							base : 2
+//						};
+//						return f.call(b,a);
+//					}
+//				}
+//				
+//				console.log(adder.add(1));
+//				console.log(adder.addThruCall(1));
+//				
+//				
+//				var a = 2;
+//				
+//				function fca(){
+//					console.log(this.a);
+//				}
+//				var o = {a : 1};
+//				
+//				fca.call(o);
+		
+		//不绑定 arguments
+		
+		
+//		function foo(){
+//			var f = () => arguments[0];
+//			return f(2);
+//		}
+//		
+//		console.log(foo(1));
+//		
+//		
+//		
+//		function foo1(){
+//			var f = (...args) => args[0];
+//			return f(2);
+//		}
+//		
+//		console.log(foo1(1));
+		
+		
+		
+		'use strict';
+		
+//		var obj = {
+//			i : 10,
+//			b : () => console.log(this.i,this),
+//			c : function(){
+//				console.log( this.i, this)
+//			}
+//		}
+//		
+//		console.log(obj.b());
+//		console.log(obj.c());
+//		
+		var obj = {
+			a : 10
+		};
+		
+		Object.defineProperty(obj,"b",{
+			get: () => {
+				console.log(this.a,typeof this.a,this);
+				return this.a + 10;
+			}
+		})
+		
+		console.log(obj)
+		
+	</script>
+	
+</html>

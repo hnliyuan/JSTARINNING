@@ -23,7 +23,7 @@ function defineSubclass(superclass,
  * @param {Object} statics
  */
 Function.prototype.extend = function(constructor, methods, statics){
-	return defineSubclass(this,constructor,methods,statics);
+	return defineSubclass(this,constructor,methods,statdics);
 }
 
 /**
