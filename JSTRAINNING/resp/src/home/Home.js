@@ -12,6 +12,8 @@ import {
   CheckBox 
 } from 'react-native-elements'
 import { StackNavigator } from 'react-navigation';
+import Register from './Register'
+import ForgetPassWord from './ForgetPassWord'
 
 
 
@@ -104,4 +106,12 @@ styles = StyleSheet.create({
   }
 })
 
-export default Home
+//进行导航的注册
+const SimpleApp = StackNavigator({
+  Home : { screen: Home },
+  ForgetPassWord : { screen: ForgetPassWord },
+  Register : { screen: Register }
+});
+
+
+export default SimpleApp

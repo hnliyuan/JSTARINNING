@@ -8,10 +8,13 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
 } from 'react-native';
-import App from './src/App'
+import AppContainer from './src/AppContainer'
 
 const resp_app = () => (
-	<App/>
+	<AppContainer/>
 )
 
+
 AppRegistry.registerComponent('resp', () => resp_app);
+
+

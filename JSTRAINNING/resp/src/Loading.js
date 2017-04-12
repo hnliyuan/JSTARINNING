@@ -7,11 +7,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import Util from './util/Util';
-import { StackNavigator } from 'react-navigation';
-import Home from './home/Home';
-import ForgetPassWord from './home/ForgetPassWord'
-import Register from './home/Register'
-import { NavigationActions } from 'react-navigation'
+import Constant  from './util/Constant'
 
 
 
@@ -22,23 +18,16 @@ let image3 = require('../src/images/nav3.png');
 
 
 
-class GuideView extends Component {
+export default class Loading extends Component {
 	
 	constructor(props){
 		super(props)
 	}
 	
-	static navigationOptions = {
-    header: ({ state, setParams }) => ({
-      // Render a button on the right side of the header
-      // When pressed switches the screen to edit mode.
-      visible:false
-    }),
-  };
   
   render() {
-  	// 读取
-  	const { navigate, dispatch } = this.props.navigation;
+  	
+  	const { checkLogin } = this.props;
 			
     return (<ScrollView
         contentContainerStyle={styles.contentContainer}
@@ -48,7 +37,7 @@ class GuideView extends Component {
         <Image source={image1} style={styles.backgroundImage} />
         <Image source={image2} style={styles.backgroundImage} />
         <TouchableHighlight  
-				  onPress={() => dispatch(resetAction)}
+				  onPress={() => checkLogin()}
 				>
         	<Image source={image3} style={styles.backgroundImage}/>
         </TouchableHighlight>
@@ -56,22 +45,6 @@ class GuideView extends Component {
   }
 };
 
-
-const resetAction = NavigationActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({ routeName: 'Home'})
-  ]
-})
-
-
-//进行导航的注册
-const SimpleApp = StackNavigator({
-  Guide : { screen: GuideView },
-  Home : { screen: Home },
-  ForgetPassWord : { screen: ForgetPassWord },
-  Register : { screen: Register }
-});
 
 
 var styles = StyleSheet.create({
@@ -85,4 +58,3 @@ var styles = StyleSheet.create({
     },
 });
 
-export default SimpleApp
