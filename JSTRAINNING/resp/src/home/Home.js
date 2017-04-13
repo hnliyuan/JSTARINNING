@@ -4,6 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import Register from './Register'
 import ForgetPassWord from './ForgetPassWord'
 import ReceiveMsg from './findPassMethod/ReceiveMsg'
+import UpdatePassword from './findPassMethod/UpdatePassword'
+import RegisterSuccess from './findPassMethod/RegisterSuccess'
 import {
   Text,
   Button,
@@ -111,7 +113,9 @@ const SimpleApp = StackNavigator({
   Home : { screen: Home },
   ForgetPassWord : { screen: ForgetPassWord },
   Register : { screen: Register },
-  ReceiveMsg : { screen: ReceiveMsg}
+  ReceiveMsg : { screen: ReceiveMsg },
+  UpdatePassword : {  screen: UpdatePassword  },
+  RegisterSuccess  : { screen:  RegisterSuccess }
 });
 
 

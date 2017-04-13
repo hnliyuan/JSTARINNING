@@ -35,8 +35,6 @@ class PhoneMethod extends Component{
 				    buttonStyle={{marginTop: 10, height:40 }}
 				    textStyle={{fontSize:20, textAlign:'center'}}
 				    title='下一步' />
-
-				
 			</View>
 		)
 	}

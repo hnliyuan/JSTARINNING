@@ -23,9 +23,7 @@ class ReceiveMsg extends Component{
 	  			</TouchableHighlight>
 	  		),
 	  		right : (
-	  			<TouchableHighlight onPress={() => goBack()}  >
-	  				<Text style={{width:40,fontSize:16,color:'white',marginRight:10}}>{'完成'}</Text>
-	  			</TouchableHighlight>
+  				<Text style={{width:40,fontSize:16,color:'white',marginRight:10}}>{' '}</Text>
 	  		)
 	  		
 	  })
@@ -34,13 +32,14 @@ class ReceiveMsg extends Component{
 	
 
 	render (){
+
 		
 		return (
 			<Grid containerStyle={{marginTop:20}}>
 
-				<Row containerStyle={{height:40,marginTop:40}}>
+				<Row containerStyle={{height:40,marginTop:10}}>
 					<Col >
-						<FormLabel labelStyle={{textAlign:'right',fontSize:20}}>当前手机号码是:</FormLabel>
+						<FormLabel labelStyle={{textAlign:'right'}}>当前手机号码是:</FormLabel>
 					</Col>
 					<Col >
 						<TextInput inputStyle={{readonly:true}}>15581670603</TextInput>
@@ -50,37 +49,32 @@ class ReceiveMsg extends Component{
 				</Row>
 				
 				
-				<Row containerStyle={{height:40,marginTop:40}}>
+				<Row containerStyle={{height:40,marginTop:10}}>
 					<Col >
-						<FormLabel labelStyle={{textAlign:'right',fontSize:20}}>请输入收到的短信验证码:</FormLabel>
+						<FormLabel labelStyle={{textAlign:'right'}}>短信验证码:</FormLabel>
 					</Col>
 					<Col >
 						<TextInput ></TextInput>
 					</Col>
-					<Col>
+					<Col >
 						<Button
-						onPress={ () => this.props.navigate('ReceiveMsg') }
-					    icon={{name: 'done'}}
+						onPress={ () => console.log('验证码') }
+					    icon={{name: 'cached'}}
 					    backgroundColor='#0cb8f6'
+					    buttonStyle={{marginTop:0,marginBottom:10,height:30}}
 					    textStyle={{fontSize:20, textAlign:'center'}}
-					    title='重新发送验证码' />
+					    title='验证码' />
+					    
 					</Col>
 				</Row>
-
-				<Row containerStyle={{height:40,marginTop:40}}>
-					<Col>
-					</Col>
-					<Col>
-						<Button
-						onPress={ () => this.props.navigate('ReceiveMsg') }
+				
+				<Button
+						onPress={ () => this.props.navigation.navigate('UpdatePassword') }
 					    icon={{name: 'done'}}
 					    backgroundColor='#0cb8f6'
+					    buttonStyle={{height:40,marginTop:10}}
 					    textStyle={{fontSize:20, textAlign:'center'}}
-					    title='确认' />
-					</Col>
-					<Col>
-					</Col>
-				</Row>
+					    title='下一步' />
 			</Grid>
 		)
 	}
