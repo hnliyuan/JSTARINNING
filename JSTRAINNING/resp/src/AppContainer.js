@@ -12,17 +12,22 @@ export default class AppContainer extends Component{
 		this.state = {
 			loginState : Constant.Login.WAIT_LOGIN
 		}
+		
+//		this.checkLogin = checkLogin.bind(this);
+
+		
 	}
 	
 	componentDidMount()  {
 		//该方法被调用时，已经渲染出真实的 DOM
 		//  checkLogin
-		this.checkLogin();
+		//this.checkLogin();
 	}
 	
 	
-	checkLogin() {
+	checkLogin = () => {
 		
+
 		if(this.state.loginState === Constant.Login.LOGININ) {
 			this.setState({ loginState : Constant.Login.LOGININ })
 		}else{

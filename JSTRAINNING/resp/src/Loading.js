@@ -27,8 +27,7 @@ export default class Loading extends Component {
   
   render() {
   	
-  	const { checkLogin } = this.props;
-			
+
     return (<ScrollView
         contentContainerStyle={styles.contentContainer}
         bounces={false}
@@ -37,7 +36,7 @@ export default class Loading extends Component {
         <Image source={image1} style={styles.backgroundImage} />
         <Image source={image2} style={styles.backgroundImage} />
         <TouchableHighlight  
-				  onPress={() => checkLogin()}
+				  onPress={ this.props.checkLogin }
 				>
         	<Image source={image3} style={styles.backgroundImage}/>
         </TouchableHighlight>
