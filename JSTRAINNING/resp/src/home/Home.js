@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { ScrollView, TouchableHighlight, View, StyleSheet, Platform, Image, Dimensions, StatusBar, BackAndroid} from 'react-native'
-
+import { StackNavigator } from 'react-navigation';
+import Register from './Register'
+import ForgetPassWord from './ForgetPassWord'
+import ReceiveMsg from './findPassMethod/ReceiveMsg'
 import {
   Text,
   Button,
@@ -11,9 +14,7 @@ import {
   FormInput,
   CheckBox 
 } from 'react-native-elements'
-import { StackNavigator } from 'react-navigation';
-import Register from './Register'
-import ForgetPassWord from './ForgetPassWord'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
 
@@ -60,7 +61,6 @@ class Home extends Component {
 					<FormLabel><Text>密码</Text></FormLabel>
 					<FormInput placeholder='请输入密码...'  secureTextEntry={true} placeholderTextColor='#dcdcdc' />
 					<Button
-			    icon={{name: 'code'}}
 			    backgroundColor='#0cb8f6'
 			    buttonStyle={{marginTop: 10, height:40 }}
 			    textStyle={{fontSize:20, textAlign:'center'}}
@@ -110,7 +110,8 @@ styles = StyleSheet.create({
 const SimpleApp = StackNavigator({
   Home : { screen: Home },
   ForgetPassWord : { screen: ForgetPassWord },
-  Register : { screen: Register }
+  Register : { screen: Register },
+  ReceiveMsg : { screen: ReceiveMsg}
 });
 
 

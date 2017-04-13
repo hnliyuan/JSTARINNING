@@ -10,7 +10,7 @@ export default class AppContainer extends Component{
 		super(props)
 		//设置登录初始值
 		this.state = {
-			loginState : Constant.Login.WAIT_LOGIN
+			loginState : Constant.Login.LOGIN
 		}
 		
 //		this.checkLogin = checkLogin.bind(this);

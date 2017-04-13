@@ -7,6 +7,7 @@ Grid,
 Row,
 ButtonGroup
 } from 'react-native-elements'
+import PhoneMethod from './findPassMethod/PhoneMethod'
 
 
 
@@ -46,11 +47,14 @@ class ForgetPassWord extends Component{
 	render() {
 		const buttons = ['手机方式', '邮件方式', '短信方式']
 		
-		let page = (<View><Text>Phone</Text></View>);
+		const { navigate } = this.props.navigation
+		
+		
+		let page = (<PhoneMethod navigate={navigate}></PhoneMethod>)
 		
 		switch(this.state.selectedIndex) {
 			case Constant.ForgetPassWord.PHONE:
-				page = (<View><Text>PHONE</Text></View>)
+				page = (<PhoneMethod navigate={navigate}></PhoneMethod>)
 				break;
 			case Constant.ForgetPassWord.EMAIL:
 				page = (<View><Text>Email</Text></View>)
