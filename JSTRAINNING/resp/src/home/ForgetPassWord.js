@@ -8,6 +8,7 @@ Row,
 ButtonGroup
 } from 'react-native-elements'
 import PhoneMethod from './findPassMethod/PhoneMethod'
+import EmailMethod from './findPassMethod/EmailMethod'
 
 
 
@@ -45,7 +46,7 @@ class ForgetPassWord extends Component{
 		
 		
 	render() {
-		const buttons = ['手机方式', '邮件方式', '短信方式']
+		const buttons = ['手机方式', '邮件方式']
 		
 		const { navigate } = this.props.navigation
 		
@@ -57,10 +58,7 @@ class ForgetPassWord extends Component{
 				page = (<PhoneMethod navigate={navigate}></PhoneMethod>)
 				break;
 			case Constant.ForgetPassWord.EMAIL:
-				page = (<View><Text>Email</Text></View>)
-				break;
-			case Constant.ForgetPassWord.SMS:
-				page = (<View><Text>SMS</Text></View>)
+				page = (<EmailMethod></EmailMethod>)
 				break;
 		}
 		

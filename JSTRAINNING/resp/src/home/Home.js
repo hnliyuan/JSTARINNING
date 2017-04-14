@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { ScrollView, TouchableHighlight, View, StyleSheet, Platform, Image, Dimensions, StatusBar, BackAndroid} from 'react-native'
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import Register from './Register'
 import ForgetPassWord from './ForgetPassWord'
 import ReceiveMsg from './findPassMethod/ReceiveMsg'
 import UpdatePassword from './findPassMethod/UpdatePassword'
 import RegisterSuccess from './findPassMethod/RegisterSuccess'
+import Index from '../../src/index/Index'
 import {
   Text,
   Button,
@@ -66,6 +67,7 @@ class Home extends Component {
 			    backgroundColor='#0cb8f6'
 			    buttonStyle={{marginTop: 10, height:40 }}
 			    textStyle={{fontSize:20, textAlign:'center'}}
+			    onPress={ ()=> this.props.navigation.dispatch(resetAction) }
 			    title='登录' />
 					<Grid containerStyle={{width:this.state.size.width, marginTop:20}}>
 						<Col>
@@ -115,8 +117,18 @@ const SimpleApp = StackNavigator({
   Register : { screen: Register },
   ReceiveMsg : { screen: ReceiveMsg },
   UpdatePassword : {  screen: UpdatePassword  },
-  RegisterSuccess  : { screen:  RegisterSuccess }
+  RegisterSuccess  : { screen:  RegisterSuccess },
+  Index  : { screen:  Index },
 });
+
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Index'})
+  ]
+})
+
 
 
 export default SimpleApp
