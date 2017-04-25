@@ -60,7 +60,7 @@ class Home extends Component {
 		  <Row size={60}>
 		  	<View style={[{ backgroundColor:'white',width:this.state.size.width }]}>
 		  		<FormLabel><Text>登录帐号</Text></FormLabel>
-					<FormInput placeholder='请输入帐号...'  placeholderTextColor='#dcdcdc' />
+					<FormInput placeholder='请输入手机号码/邮箱地址/帐号名...'  placeholderTextColor='#dcdcdc' />
 					<FormLabel><Text>密码</Text></FormLabel>
 					<FormInput placeholder='请输入密码...'  secureTextEntry={true} placeholderTextColor='#dcdcdc' />
 					<Button

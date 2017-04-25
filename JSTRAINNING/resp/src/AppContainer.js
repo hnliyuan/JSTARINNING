@@ -3,6 +3,7 @@ import Loading from './Loading'
 import Home from './home/Home'
 import Index from './index/Index'
 import Constant from './util/Constant'
+import SplashScreen from 'react-native-splash-screen'
 
 export default class AppContainer extends Component{
 	
@@ -14,15 +15,13 @@ export default class AppContainer extends Component{
 		}
 		
 //		this.checkLogin = checkLogin.bind(this);
-
 		
 	}
-	
 	componentDidMount()  {
-		//该方法被调用时，已经渲染出真实的 DOM
-		//  checkLogin
-		//this.checkLogin();
+	     // do anything while splash screen keeps, use await to wait for an async task.	
+		SplashScreen.hide();
 	}
+
 	
 	
 	checkLogin = () => {
