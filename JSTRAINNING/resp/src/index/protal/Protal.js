@@ -41,13 +41,10 @@ class Protal extends Component{
 				</View>
 				<View style={styles.header}>
 					<View style={styles.leftBackView}>
-		        		<Text style={styles.centerText}>预留空间</Text>
 					</View>
 					<View style={styles.centerTitle}>
-						<Text style={styles.centerText}>预留空间</Text>
 					</View>
 					<View style={styles.rightBackView}>
-						<Text style={styles.centerText}>预留空间</Text>
 					</View>
 				</View>
 				

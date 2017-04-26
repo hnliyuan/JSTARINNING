@@ -51,6 +51,12 @@ class Index extends Component{
 				case 'H' :
 				  navigate('History');
 					break;
+				case 'S' :
+				  navigate('Setting');
+					break;
+				case 'SA' :
+				  navigate('UserSetting');
+					break;
 			}
 		}
 	}
@@ -78,6 +84,16 @@ class Index extends Component{
 	        name: '历史查看记录',
 	        icon: 'history',
 	        type: 'H',
+	      },
+	      {
+	        name: '系统设置',
+	        icon: 'settings',
+	        type: 'S',
+	      },
+	      {
+	        name: '帐号设置',
+	        icon: 'supervisor-account',
+	        type: 'SA',
 	      },
 	      {
 	        name: '退出当前登录',

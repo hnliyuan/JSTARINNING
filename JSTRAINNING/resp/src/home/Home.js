@@ -11,6 +11,8 @@ import WarnningData from '../../src/drawer/WarnningData'
 import PrivateData from '../../src/drawer/PrivateData'
 import History from '../../src/drawer/History'
 import Index from '../../src/index/Index'
+import Setting from '../../src/drawer/Setting'
+import UserSetting from '../../src/drawer/UserSetting'
 import {
   Text,
   Button,
@@ -127,6 +129,8 @@ const SimpleApp = StackNavigator({
 	WarnningData: {screen:WarnningData},
 	PrivateData: {screen:PrivateData},
 	History: {screen:History},
+	UserSetting: {screen:UserSetting},
+	Setting: {screen:Setting},
 	
 });
 
