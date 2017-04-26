@@ -1,55 +1,108 @@
 import React, { Component } from 'react'
-import { View , Text, StyleSheet,Platform }  from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import colors from 'HSColors'
-import fonts from 'HSFonts'
-
-import { Tabs, Tab } from 'react-native-elements'
+import { View , Text, StyleSheet, Image }  from 'react-native'
+import {
+  List,
+  ListItem,
+  SideMenu
+} from 'react-native-elements'
 import Protal from './protal/Protal'
 
 let styles = {}
 
 class Index extends Component{
+	
+	static navigationOptions = {
+	    header: ({ state, setParams }) => ({
+	      visible:false //隐藏header
+	    }),
+  	};
+  
 	constructor () {
 		super()
-	    this.state = {
-	      selectedTab: 'home'
-	    }
-	    this.changeTab = this.changeTab.bind(this)
+		this.state = {
+			isOpen:false
+		}
 	}
-	changeTab (selectedTab) {
+
+	toggleSideMenu = () => {
 	    this.setState({
-	      selectedTab
+	      isOpen: !this.state.isOpen
 	    })
   	}
+	
+	onSideMenuChange = (isOpen: boolean) => {
+	    this.state = {
+	      isOpen: isOpen
+	    }
+  	}
+
 	render(){
-		const { selectedTab } = this.state
+	 	const src = require('../../src/images/LeftLogo.png')
+	    const list = [
+	      {
+	        name: '我的运行报告',
+	        icon: 'assignment'
+	      },
+	      {
+	        name: '查看告警信息',
+	        icon: 'warning'
+	      },
+	      {
+	        name: '我的收藏',
+	        icon: 'collections'
+	      },
+	      {
+	        name: '历史查看记录',
+	        icon: 'history'
+	      },
+	      {
+	        name: '退出当前登录',
+	        icon: 'settings-power'
+	      }
+	    ]
+	
+	    const MenuComponent = (
+	      <View style={{flex: 1, backgroundColor: '#08527a', paddingTop: 30,borderWidth:1,borderColor:'#08527a'}}>
+	        <View style={{backgroundColor: '#08527a', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', padding: 10,}}>
+	        	<Image
+	            source={src}
+	            style={styles.logo} />
+	        </View>
+	        <List containerStyle={{marginBottom: 20,}}>
+	        {
+	          list.map((l, i) => (
+	            <ListItem
+	            
+	              onPress={() => console.log('something')}
+	              key={i}
+	              title={l.name}
+	              leftIcon={{name: l.icon}}
+	              
+	            />
+	          ))
+	        }
+	        </List>
+	      </View>
+	    )
+	    
 		return (
-			<Tabs hidesTabTouch>
-		        <Tab
-		          titleStyle={[styles.titleStyle]}
-		          selectedTitleStyle={[styles.titleSelected, {marginTop: -3, marginBottom: 7}]}
-		          selected={selectedTab === 'protal'}
-		          title={selectedTab === 'protal' ? 'Protal' : null}
-		          renderIcon={() => <Icon color={colors.grey2} name='whatshot' size={26} />}
-		          renderSelectedIcon={() => <Icon color={colors.primary} name='whatshot' size={26} />}
-		          onPress={() => this.changeTab('protal')}>
-		          <Protal />
-		        </Tab>
-	      </Tabs>
+		      <SideMenu
+		        isOpen={this.state.isOpen}
+		        onChange={this.onSideMenuChange}
+		        menu={MenuComponent}>
+		        <Protal toggleSideMenu={this.toggleSideMenu} />
+		      </SideMenu>
 		)
 	}
 }
 
 styles = StyleSheet.create({
-  titleStyle: {
-    ...Platform.select({
-      ios: {
-        fontFamily: fonts.ios.black
-      }
-    })
-  }
+  logo: {
+    width: 160,
+    height: 34
+  },
 })
+
  
 export default Index
 

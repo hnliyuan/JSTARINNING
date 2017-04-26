@@ -1,10 +1,23 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 class Protal extends Component{
 	
+    constructor () {
+	    super()
+  	}
+    componentDidMount(){
+    	
+    }
+    
 	render() {
-		return (<View></View>)
+		
+		return (
+			<View style={styles.container}>
+				
+			</View>
+		)
 	}
+	
 	
 }
 
@@ -14,7 +27,11 @@ styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
         alignItems: 'center',
-	}
+        backgroundColor:'white',
+	},
+	contentContainer: {
+      paddingVertical: 20
+    }
 })
 
 export default Protal
