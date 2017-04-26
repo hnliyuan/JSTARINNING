@@ -6,6 +6,10 @@ import ForgetPassWord from './ForgetPassWord'
 import ReceiveMsg from './findPassMethod/ReceiveMsg'
 import UpdatePassword from './findPassMethod/UpdatePassword'
 import RegisterSuccess from './findPassMethod/RegisterSuccess'
+import RuntimeData from '../../src/drawer/RuntimeData'
+import WarnningData from '../../src/drawer/WarnningData'
+import PrivateData from '../../src/drawer/PrivateData'
+import History from '../../src/drawer/History'
 import Index from '../../src/index/Index'
 import {
   Text,
@@ -119,6 +123,11 @@ const SimpleApp = StackNavigator({
   UpdatePassword : {  screen: UpdatePassword  },
   RegisterSuccess  : { screen:  RegisterSuccess },
   Index  : { screen:  Index },
+  RuntimeData: {screen:RuntimeData},
+	WarnningData: {screen:WarnningData},
+	PrivateData: {screen:PrivateData},
+	History: {screen:History},
+	
 });
 
 

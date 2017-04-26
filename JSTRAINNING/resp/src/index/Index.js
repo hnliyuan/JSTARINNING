@@ -35,29 +35,54 @@ class Index extends Component{
 	      isOpen: isOpen
 	    }
   	}
+	
+	_navigator = (navigate,linkType) => {
+		if(linkType) {
+			switch(linkType) {
+				case 'R'  :
+					navigate('RuntimeData');
+					break;
+				case 'W'  :
+				  navigate('WarnningData');
+					break;
+				case 'P'  :
+				  navigate('PrivateData');
+					break;
+				case 'H' :
+				  navigate('History');
+					break;
+			}
+		}
+	}
 
 	render(){
-	 	const src = require('../../src/images/LeftLogo.png')
+			const { navigate } = this.props.navigation
+		 	const src = require('../../src/images/LeftLogo.png')
 	    const list = [
 	      {
 	        name: '我的运行报告',
-	        icon: 'assignment'
+	        icon: 'assignment',
+	        type: 'R'
 	      },
 	      {
 	        name: '查看告警信息',
-	        icon: 'warning'
+	        icon: 'warning',
+	        type: 'W',
 	      },
 	      {
 	        name: '我的收藏',
-	        icon: 'collections'
+	        icon: 'collections',
+	        type: 'P',
 	      },
 	      {
 	        name: '历史查看记录',
-	        icon: 'history'
+	        icon: 'history',
+	        type: 'H',
 	      },
 	      {
 	        name: '退出当前登录',
 	        icon: 'settings-power'
+	        
 	      }
 	    ]
 	
@@ -73,7 +98,7 @@ class Index extends Component{
 	          list.map((l, i) => (
 	            <ListItem
 	            
-	              onPress={() => console.log('something')}
+	              onPress={() => this._navigator(navigate,l.type)}
 	              key={i}
 	              title={l.name}
 	              leftIcon={{name: l.icon}}
@@ -90,7 +115,7 @@ class Index extends Component{
 		        isOpen={this.state.isOpen}
 		        onChange={this.onSideMenuChange}
 		        menu={MenuComponent}>
-		        <Protal toggleSideMenu={this.toggleSideMenu} />
+		        <Protal toggleSideMenu={this.toggleSideMenu} navigation={this.props.navigation} />
 		      </SideMenu>
 		)
 	}
@@ -102,6 +127,7 @@ styles = StyleSheet.create({
     height: 34
   },
 })
+
 
  
 export default Index
