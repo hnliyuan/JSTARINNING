@@ -14,7 +14,6 @@ export default class AppContainer extends Component{
 			loginState : Constant.Login.LOGIN
 		}
 		
-//		this.checkLogin = checkLogin.bind(this);
 		
 	}
 	componentDidMount()  {
