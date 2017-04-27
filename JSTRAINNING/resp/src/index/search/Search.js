@@ -18,7 +18,7 @@ import {
 
 
 
-class Protal extends Component{
+class Search extends Component{
 	
     constructor (props) {
 	    super(props)
@@ -152,19 +152,7 @@ class Protal extends Component{
 						</View>
 					</View>
 						<View style={styles.center}>
-							<MapView
-				                trafficEnabled={this.state.trafficEnabled}
-				                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-				                zoom={this.state.zoom}
-				                mapType={this.state.mapType}
-				                center={this.state.center}
-				                marker={this.state.marker}
-				                markers={this.state.markers}
-				                style={styles.map}
-				                onMapClick={(e) => {
-				                }}
-				                >
-			                </MapView>
+							
 						</View>
 				</View>
 			</MenuContext>
@@ -222,4 +210,4 @@ styles = StyleSheet.create({
 
 })
 
-export default Protal
+export default Search

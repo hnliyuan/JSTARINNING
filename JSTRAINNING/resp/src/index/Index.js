@@ -6,6 +6,7 @@ import {
   SideMenu
 } from 'react-native-elements'
 import Protal from './protal/Protal'
+import App from './App'
 
 let styles = {}
 
@@ -131,7 +132,7 @@ class Index extends Component{
 		        isOpen={this.state.isOpen}
 		        onChange={this.onSideMenuChange}
 		        menu={MenuComponent}>
-		        <Protal toggleSideMenu={this.toggleSideMenu} navigation={this.props.navigation} />
+		        <App toggleSideMenu={this.toggleSideMenu} navigation={this.props.navigation} />
 		      </SideMenu>
 		)
 	}
