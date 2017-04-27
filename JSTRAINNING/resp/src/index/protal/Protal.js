@@ -10,6 +10,12 @@ import {
 import ModalPicker from 'react-native-modal-picker'
 
 import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import {
+  List,
+  ListItem,
+  SideMenu
+} from 'react-native-elements'
+
 
 
 class Protal extends Component{
@@ -71,66 +77,108 @@ class Protal extends Component{
 		const { toggleSideMenu } = this.props
 		const { mapShow } = this.state
 		return (
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<View style={styles.leftBackView}>
-		        		<Icon
-						  name='account-circle'
-						  color='white'
-						  size={32}
-						  onPress={() => toggleSideMenu()} />
-					</View>
-					<View style={styles.centerTitle}>
-		                <ModalPicker
-		                    data={data}
-		                    initValue="选择地区..."
-		                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}
-	                    >
-		                    <TextInput
-		                        style={styles.centerText}
-		                        editable={false}
-		                        placeholder = "选择地区..."
-		                        placeholderTextColor = 'white'
-		                        value={this.state.textInputValue} />
-		                        
-		                </ModalPicker>
-						
-						
-					</View>
-					<View style={styles.rightBackView}>
-						<Icon
-							  name='add-circle'
+			<MenuContext style={{ flex: 1 }}>
+				<View style={styles.container}>
+					<View style={styles.header}>
+						<View style={styles.leftBackView}>
+			        		<Icon
+							  name='account-circle'
 							  color='white'
 							  size={32}
-							  onPress={() => console.log('in')} />
+							  onPress={() => toggleSideMenu()} />
+						</View>
+						<View style={styles.centerTitle}>
+			                <ModalPicker
+			                    data={data}
+			                    initValue="选择地区..."
+			                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}
+		                    >
+			                    <TextInput
+			                        style={styles.centerText}
+			                        editable={false}
+			                        placeholder = "选择地区..."
+			                        placeholderTextColor = 'white'
+			                        value={this.state.textInputValue} />
+			                        
+			                </ModalPicker>
+							
+							
+						</View>
+						<View style={styles.rightBackView}>
+							
+								<Menu onSelect={(value) => alert(`User selected the number ${value}`)}>
+									<MenuTrigger>
+										<Icon
+										  name='add-circle'
+										  color='white'
+										  size={32}
+										  />
+								    </MenuTrigger>
+								    <MenuOptions optionsContainerStyle={{ marginTop:45 ,borderRadius: 10,backgroundColor:'#0b77b2',width:120}}>
+								        <MenuOption value={1} style={{borderBottomWidth:0.5,borderBottomColor:'white'}}>
+								        	<View style={{flexDirection: 'row'}}>
+								        		 <Icon
+												  name='search'
+												  color='white'
+												  size={20}
+												  />
+								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查询水泵</Text>
+								        	</View>
+								         
+								        </MenuOption>
+								        <MenuOption value={2} style={{borderBottomWidth:0.5,borderBottomColor:'white'}} >
+												<View style={{flexDirection: 'row'}}>
+								        		 <Icon
+												  name='insert-drive-file'
+												  color='white'
+												  size={20}
+												  />
+								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查看报表</Text>
+								        	</View>
+								        </MenuOption>
+								        <MenuOption value={3} style={{}} >
+												<View style={{flexDirection: 'row'}}>
+								        		 <Icon
+												  name='wallpaper'
+												  color='white'
+												  size={20}
+												  />
+								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>扫一扫</Text>
+								        	</View>
+								        </MenuOption>
+							      	</MenuOptions>
+								</Menu>
+							
+						</View>
+					</View>
+					
+						<View style={styles.center}>
+							<MapView
+				                trafficEnabled={this.state.trafficEnabled}
+				                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+				                zoom={this.state.zoom}
+				                mapType={this.state.mapType}
+				                center={this.state.center}
+				                marker={this.state.marker}
+				                markers={this.state.markers}
+				                style={styles.map}
+				                onMapClick={(e) => {
+				                }}
+				                >
+			                </MapView>
+			 				
+						</View>
+					
+					<View style={styles.header}>
+						<View style={styles.leftBackView}>
+						</View>
+						<View style={styles.centerTitle}>
+						</View>
+						<View style={styles.rightBackView}>
+						</View>
 					</View>
 				</View>
-				<View style={styles.center}>
-					<MapView
-		                trafficEnabled={this.state.trafficEnabled}
-		                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-		                zoom={this.state.zoom}
-		                mapType={this.state.mapType}
-		                center={this.state.center}
-		                marker={this.state.marker}
-		                markers={this.state.markers}
-		                style={styles.map}
-		                onMapClick={(e) => {
-		                }}
-		                >
-	                </MapView>
-	 				
-				</View>
-				<View style={styles.header}>
-					<View style={styles.leftBackView}>
-					</View>
-					<View style={styles.centerTitle}>
-					</View>
-					<View style={styles.rightBackView}>
-					</View>
-				</View>
-				
-			</View>
+			</MenuContext>
 		)
 	}
 	
