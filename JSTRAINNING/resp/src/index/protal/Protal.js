@@ -40,6 +40,22 @@ class Protal extends Component{
                         latitude:data.latitude,
                         longitude:data.longitude,
                         title:'我的位置'
+                    },{
+                        latitude:data.latitude+0.0001,
+                        longitude:data.longitude,
+                        title:'1#水泵'
+                    },{
+                        latitude:data.latitude+0.0002,
+                        longitude:data.longitude,
+                        title:'2#水泵'
+                    },{
+                        latitude:data.latitude,
+                        longitude:data.longitude+0.002,
+                        title:'3#水泵'
+                    },{
+                        latitude:data.latitude+0.001,
+                        longitude:data.longitude+0.001,
+                        title:'4#水泵'
                     }],
                     center:{
                         latitude:data.latitude,
@@ -50,6 +66,7 @@ class Protal extends Component{
         ).catch(error => {
             console.warn(error,'error')
         })
+        Geolocation
         
     }
     

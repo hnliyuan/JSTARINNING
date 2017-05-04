@@ -16,10 +16,6 @@ export default class AppContainer extends Component{
 		
 		
 	}
-	componentDidMount()  {
-	     // do anything while splash screen keeps, use await to wait for an async task.	
-		SplashScreen.hide();
-	}
 
 	
 	
