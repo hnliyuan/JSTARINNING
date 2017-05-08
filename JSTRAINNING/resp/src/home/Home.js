@@ -88,13 +88,13 @@ class Home extends Component {
 				}
 				rsa.setPublicString(JSON.stringify(publicKey));
 				var encryptedPwd = rsa.encrypt(MD5(this.state.password));
-		    const bits = 1024;
-				const exponent = '10001'; // must be a string. This is hex string. decimal = 65537
-				var rsa_token = new RSAKey();
-				rsa_token.generate(bits, exponent);
-				var publicKey_token = rsa_token.getPublicString(); // return json encoded string
-				var privateKey_token = rsa_token.getPrivateString(); // return json encoded string
-				fetch('http://192.168.48.99:8088/reactNativeApp/Login!login.action?username='+this.state.username+'&&password='+encryptedPwd+'&&publickey_token='+publicKey_token+'').then((response) =>{
+//		    const bits = 1024;
+//				const exponent = '10001'; // must be a string. This is hex string. decimal = 65537
+//				var rsa_token = new RSAKey();
+//				rsa_token.generate(bits, exponent);
+//				var publicKey_token = rsa_token.getPublicString(); // return json encoded string
+//				var privateKey_token = rsa_token.getPrivateString(); // return json encoded string
+				fetch('http://192.168.48.99:8088/reactNativeApp/Login!login.action?username='+this.state.username+'&&password='+encryptedPwd+'').then((response) =>{
 					if(200 === response.status){
 						data = JSON.parse(response._bodyInit);
 						if('1' === data.status){

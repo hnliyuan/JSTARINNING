@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, TouchableHighlight, Text, StatusBar, WebView,TextInput } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableHighlight, Text, StatusBar, WebView,TextInput,Alert } from 'react-native'
 import Util from '../../util/Util'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {
@@ -24,71 +24,132 @@ class Protal extends Component{
 	    super(props)
         this.state = {
             mayType: MapTypes.NORMAL,
-            zoom: 15, 
             trafficEnabled: false,
             baiduHeatMapEnabled: false,
-            textInputValue:''
+            textInputValue:'',
+            areaData:[],
+            markers:[],
+            zoom:5,
+            center:null,
+            initValue:'请求数据..',
+            pumpData:[],
+            markerClickRecord:{},
         };
   	}
     
 	componentDidMount() { // 获取位置
-        Geolocation.getCurrentPosition().then(
-            (data) => {
-                this.setState({
-                    zoom:18,
-                    markers:[{
-                        latitude:data.latitude,
-                        longitude:data.longitude,
-                        title:'我的位置'
-                    },{
-                        latitude:data.latitude+0.0001,
-                        longitude:data.longitude,
-                        title:'1#水泵'
-                    },{
-                        latitude:data.latitude+0.0002,
-                        longitude:data.longitude,
-                        title:'2#水泵'
-                    },{
-                        latitude:data.latitude,
-                        longitude:data.longitude+0.002,
-                        title:'3#水泵'
-                    },{
-                        latitude:data.latitude+0.001,
-                        longitude:data.longitude+0.001,
-                        title:'4#水泵'
-                    }],
-                    center:{
-                        latitude:data.latitude,
-                        longitude:data.longitude,
-                    }
-                })
-            }
-        ).catch(error => {
-            console.warn(error,'error')
-        })
-        Geolocation
-        
+		
+		//发起请求获得当前帐号所有地区的数据
+		
+		fetch('http://192.168.48.99:8088/reactNativeApp/Search!getAreas.action').then((response) =>{
+					if(200 === response.status){
+						data = JSON.parse(response._bodyInit);
+						this.setState({data:data.data});
+					}else{
+						Alert.alert(
+							  '请求出错',
+							  '请求发生未知错误',
+						)
+					}
+					
+				}).catch((error) => {
+        	console.error(error);
+      	})
+		
+		
+//      Geolocation.getCurrentPosition().then(
+//          (data) => {
+//              this.setState({
+//                  zoom:18,
+//                  markers:[{
+//                      latitude:data.latitude,
+//                      longitude:data.longitude,
+//                      title:'我的位置'
+//                  },{
+//                      latitude:data.latitude+0.0001,
+//                      longitude:data.longitude,
+//                      title:'1#水泵'
+//                  },{
+//                      latitude:data.latitude+0.0002,
+//                      longitude:data.longitude,
+//                      title:'2#水泵'
+//                  },{
+//                      latitude:data.latitude,
+//                      longitude:data.longitude+0.002,
+//                      title:'3#水泵'
+//                  },{
+//                      latitude:data.latitude+0.001,
+//                      longitude:data.longitude+0.001,
+//                      title:'4#水泵'
+//                  }],
+//                  center:{
+//                      latitude:data.latitude,
+//                      longitude:data.longitude,
+//                  }
+//              })
+//          }
+//      ).catch(error => {
+//          console.warn(error,'error')
+//      })
+    }
+    
+    _getPumpsByArea = (option) => {
+    	fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey='+option.key+'').then((response) =>{
+					if(200 === response.status){
+						data = JSON.parse(response._bodyInit).data;
+						var markers = [];
+						for(var i = 0 ; i<data.length ; i++){
+							var value = data[i];
+							markers.push({
+								latitude:value.latitude,
+								longitude:value.longitude,
+								title:value.name,
+							})
+						}
+						
+						
+						var center = {
+								latitude:markers[0].latitude,
+								longitude:markers[0].longitude
+							}
+						
+						
+						this.setState({pumpData:data,markers:markers,center:center,zoom:15})
+						
+//						alert(JSON.stringify(data.data));
+//						this.setState({data:data.data});
+					}else{
+						Alert.alert(
+							  '请求出错',
+							  '请求发生未知错误',
+						)
+					}
+					
+				}).catch((error) => {
+        	console.error(error);
+      	})
+		this.setState({textInputValue:option.label})
     }
     
 	render() {
-		let index = 0;
-        const data = [
-            { key: index++, section: true, label: '湖南' },
-            { key: index++, label: '长沙' },
-            { key: index++, label: '湘潭' },
-            { key: index++, label: '株洲' },
-            { key: index++, label: '浏阳' },
-            { key: index++, label: '益阳' },
-            { key: index++, section: true, label: '广东' },
-            { key: index++, label: '广州' },
-            { key: index++, label: '佛山' },
-            { key: index++, label: '东莞' },
-            { key: index++, label: '珠海' },
-            { key: index++, label: '韶关' },
-            { key: index++, label: '清远' },
-            { key: index++, label: '梅州' },
-            { key: index++, label: '惠州' }
-        ];
+//		let index = 0;
+//      const data = [
+//          { key: index++, section: true, label: '湖南' },
+//          { key: index++, label: '长沙' },
+//          { key: index++, label: '湘潭' },
+//          { key: index++, label: '株洲' },
+//          { key: index++, label: '浏阳' },
+//          { key: index++, label: '益阳' },
+//          { key: index++, section: true, label: '广东' },
+//          { key: index++, label: '广州' },
+//          { key: index++, label: '佛山' },
+//          { key: index++, label: '东莞' },
+//          { key: index++, label: '珠海' },
+//          { key: index++, label: '韶关' },
+//          { key: index++, label: '清远' },
+//          { key: index++, label: '梅州' },
+//          { key: index++, label: '惠州' }
+//      ];
 
 		const { navigate } = this.props.navigation
 		const { toggleSideMenu } = this.props
@@ -106,14 +167,14 @@ class Protal extends Component{
 						</View>
 						<View style={styles.centerTitle}>
 			                <ModalPicker
-			                    data={data}
-			                    initValue="选择地区..."
-			                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}
+			                    data={this.state.data}
+			                    initValue={this.state.initValue}
+			                    onChange={(option)=>{ this._getPumpsByArea(option)}}
 		                    >
 			                    <TextInput
 			                        style={styles.centerText}
 			                        editable={false}
-			                        placeholder = "选择地区..."
+			                        placeholder = {this.state.initValue}
 			                        placeholderTextColor = 'white'
 			                        value={this.state.textInputValue} />
 			                        
@@ -178,7 +239,14 @@ class Protal extends Component{
 				                marker={this.state.marker}
 				                markers={this.state.markers}
 				                style={styles.map}
-				                onMapClick={(e) => {
+				                onMarkerClick={(e)=>{
+				                	
+				                	if(this.state.markerClickRecord.title === e.title){
+//				                		alert(JSON.stringify(e));
+				                	}else{
+				                		this.setState({markerClickRecord:e})
+				                	}
+				                	
 				                }}
 				                >
 			                </MapView>
