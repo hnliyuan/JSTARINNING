@@ -11,6 +11,7 @@ import WarnningData from '../../src/drawer/WarnningData'
 import PrivateData from '../../src/drawer/PrivateData'
 import History from '../../src/drawer/History'
 import Index from '../../src/index/Index'
+import Pump from '../../src/index/protal/Pump'
 import Setting from '../../src/drawer/Setting'
 import UserSetting from '../../src/drawer/UserSetting'
 import {
@@ -204,12 +205,12 @@ const SimpleApp = StackNavigator({
   RegisterSuccess  : { screen:  RegisterSuccess },
   Index  : { screen:  Index },
   RuntimeData: {screen:RuntimeData},
-	WarnningData: {screen:WarnningData},
-	PrivateData: {screen:PrivateData},
-	History: {screen:History},
-	UserSetting: {screen:UserSetting},
-	Setting: {screen:Setting},
-	
+  WarnningData: {screen:WarnningData},
+  PrivateData: {screen:PrivateData},
+  History: {screen:History},
+  UserSetting: {screen:UserSetting},
+  Setting: {screen:Setting},
+  Pump: {screen:Pump},
 });
 
 

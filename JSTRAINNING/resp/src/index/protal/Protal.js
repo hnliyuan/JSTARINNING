@@ -103,7 +103,7 @@ class Protal extends Component{
 							markers.push({
 								latitude:value.latitude,
 								longitude:value.longitude,
-								title:value.name,
+								title:value.name+'@'+value.id,
 							})
 						}
 						
@@ -240,9 +240,9 @@ class Protal extends Component{
 				                markers={this.state.markers}
 				                style={styles.map}
 				                onMarkerClick={(e)=>{
-				                	
+
 				                	if(this.state.markerClickRecord.title === e.title){
-//				                		alert(JSON.stringify(e));
+										navigate('Pump',{pump:e});
 				                	}else{
 				                		this.setState({markerClickRecord:e})
 				                	}

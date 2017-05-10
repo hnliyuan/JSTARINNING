@@ -50,7 +50,6 @@ class Search extends Component{
         ).catch(error => {
             console.warn(error,'error')
         })
-        
     }
     
 	render() {
@@ -92,17 +91,14 @@ class Search extends Component{
 			                    data={data}
 			                    initValue="选择地区..."
 			                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}
-		                    >
-			                    <TextInput
-			                        style={styles.centerText}
-			                        editable={false}
-			                        placeholder = "选择地区..."
-			                        placeholderTextColor = 'white'
-			                        value={this.state.textInputValue} />
-			                        
+		                    	>
+								<TextInput
+									style={styles.centerText}
+									editable={false}
+									placeholder = "选择地区..."
+									placeholderTextColor = 'white'
+									value={this.state.textInputValue} />
 			                </ModalPicker>
-							
-							
 						</View>
 						<View style={styles.rightBackView}>
 							
