@@ -6,6 +6,32 @@ import React , { Component } from 'react'
 import {View,StyleSheet,Text } from 'react-native'
 import Util from '../../util/Util'
 import { List, ListItem } from 'react-native-elements'
+import * as Progress from 'react-native-progress';
+
+
+const progressStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        marginTop:50,
+        paddingVertical: 20,
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    circles: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    progress: {
+        margin: 10,
+    },
+});
+
 
 class PumpRunning extends Component{
 
@@ -14,7 +40,9 @@ class PumpRunning extends Component{
         this.state = {
             powerData:[],
             voltageData:[],
-            transDatas:[]
+            transDatas:[],
+            progress: 0,
+            indeterminate: true,
         }
     }
 
@@ -28,13 +56,13 @@ class PumpRunning extends Component{
         return emptyStr;
     }
 
-    componentDidMount(){
 
 
 
-        pumpId = this.props.pump.title.substring(this.props.pump.title.indexOf('@') + 1,this.props.pump.title.length);
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpRunningDataById.action?pumpId='+pumpId+'').then((response) =>{
-            if(200 === response.status){
+    refreshData = () => {
+            pumpId = this.props.pump.title.substring(this.props.pump.title.indexOf('@') + 1,this.props.pump.title.length);
+            fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpRunningDataById.action?pumpId='+pumpId+'').then((response) =>{
+                if(200 === response.status){
                 data = JSON.parse(response._bodyInit);
 
                 let powerData = data.powerData;
@@ -87,11 +115,9 @@ class PumpRunning extends Component{
 
                 if(formartPowerData.length>0){
                     this.setState({powerData:formartPowerData,voltageData:formartVoltageData,transDatas:formartTransDatas});
+                    this.props.changeIsRefreshing(false);
+
                 }
-
-
-
-
             }else{
                 Alert.alert(
                     '请求出错',
@@ -100,87 +126,97 @@ class PumpRunning extends Component{
             }
 
         }).catch((error) => {
-            console.error(error);
+                Alert.alert(
+                    '请求出错',
+                    '请求发生未知错误',
+                )
+                this.props.changeIsRefreshing(false);
         })
+    }
+
+    componentDidMount(){
+        this.refreshData();
     }
 
 
     render(){
-        const list = [
-            {
-                title: '电流',
-                icon: 'av-timer'
-            },
-            {
-                title: '线电压',
-                icon: 'flight-takeoff'
-            },
-            {
-                title: '电机输入功率',
-                icon: 'flight-takeoff'
-            },
-            {
-                title: '功率因素',
-                icon: 'flight-takeoff'
-            },
-        ]
 
         const { pump } = this.props
+
+
+
+        if(this.state.powerData.length == 0 ){
+            return (
+                <View style={progressStyles.container}>
+                    <View style={progressStyles.circles}>
+                        <Progress.CircleSnail
+                            style={progressStyles.progress}
+                            color={[
+                                '#F44336',
+                                '#2196F3',
+                                '#009688',
+                            ]}
+                        />
+                    </View>
+                </View>
+            )
+        }
+
 
         return (
             <View style={pumpRunningStyles.container}>
                 <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>电力数据</Text>
-                <List>
-                    {
-                        this.state.powerData.map((item, i) => (
-                            <ListItem
-                                key={i}
-                                title={item.title}
-                                leftIcon={{name: item.icon}}
-                                rightTitle={item.rightTitle}
-                                rightTitleStyle={{color:'white'}}
-                                rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                                rightIcon={{style:{display:'none'}}}
-                                hideChevron={true}
+            <List>
+                {
+                    this.state.powerData.map((item, i) => (
+                        <ListItem
+                        key={i}
+                        title={item.title}
+                        leftIcon={{name: item.icon}}
+                        rightTitle={item.rightTitle}
+                        rightTitleStyle={{color:'white'}}
+                        rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
+                        rightIcon={{style:{display:'none'}}}
+                        hideChevron={true}
 
                             />
-                        ))
-                    }
-                </List>
-                <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>计算数据</Text>
-                <List>
-                {
-                        this.state.voltageData.map((item, i) => (
-                            <ListItem
-                            key={i}
-                            title={item.title}
-                            leftIcon={{name: item.icon}}
-                            rightTitle={item.rightTitle}
-                            rightTitleStyle={{color:'white'}}
-                            rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                            rightIcon={{style:{display:'none'}}}
-                            hideChevron={true}
-                            />
-                        ))
-                }
-                </List>
-                <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>传感器数据</Text>
-                <List>
-                    {
-                        this.state.transDatas.map((item, i) => (
-                                <ListItem
-                                key={i}
-                                title={item.title}
-                                leftIcon={{name: item.icon}}
-                                rightTitle={item.rightTitle}
-                                rightTitleStyle={{color:'white'}}
-                                rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                                rightIcon={{style:{display:'none'}}}
-                                hideChevron={true}
-                                />
-                        ))
-                    }
-                </List>
+                    ))
+             }
+            </List>
+            <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>计算数据</Text>
+            <List>
+            {
+                this.state.voltageData.map((item, i) => (
+                    <ListItem
+                    key={i}
+                    title={item.title}
+                    leftIcon={{name: item.icon}}
+                    rightTitle={item.rightTitle}
+                    rightTitleStyle={{color:'white'}}
+                    rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
+                    rightIcon={{style:{display:'none'}}}
+                    hideChevron={true}
+                        />
+                ))
+            }
+            </List>
+            <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>传感器数据</Text>
+            <List>
+            {
+                this.state.transDatas.map((item, i) => (
+                    <ListItem
+                    key={i}
+                    title={item.title}
+                    leftIcon={{name: item.icon}}
+                    rightTitle={item.rightTitle}
+                    rightTitleStyle={{color:'white'}}
+                    rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
+                    rightIcon={{style:{display:'none'}}}
+                    hideChevron={true}
+                        />
+                ))
+            }
+        </List>
             </View>
         )
     }

@@ -2,7 +2,7 @@
  * Created by Administrator on 2017-05-09.
  */
 import React, { Component } from 'react'
-import { View ,TouchableHighlight,Text, StyleSheet, ScrollView } from 'react-native'
+import { View ,TouchableHighlight,Text, StyleSheet, ScrollView, RefreshControl } from 'react-native'
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PumpRunning from './PumpRunning'
@@ -27,9 +27,21 @@ class Pump extends Component{
             })
     }
 
+    constructor(props){
+        super(props)
+        this.state = {
+            isRefreshing:false,
+        }
+    }
 
-    componentDidMount(){
+    changeIsRefreshing = (value) =>{
+        this.setState({isRefreshing:value});
+    }
 
+
+    _onRefresh = () => {
+        this.setState({isRefreshing: true});
+        this.refs.pumpRunning.refreshData();
     }
 
     render() {
@@ -42,8 +54,21 @@ class Pump extends Component{
             style={styles.container}
             renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.7)' />}
             tabBarPosition='overlayTop'>
-                <ScrollView tabLabel='实时数据'>
-                    <PumpRunning pump={pump} />
+                <ScrollView tabLabel='实时数据'
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={this._onRefresh}
+                            tintColor="#ff0000"
+                            title="刷新..."
+                            titleColor="#00ff00"
+                            colors={['#ff0000', '#ff0000', '#ff0000']}
+                            // progressBackgroundColor="#08527a"
+                            progressViewOffset={50}
+                            />
+                     }
+                >
+                    <PumpRunning ref="pumpRunning" pump={pump} changeIsRefreshing={this.changeIsRefreshing}/>
                 </ScrollView>
                 <ScrollView tabLabel='性能曲线'>
                     <Icon name='logo-android' color='#A4C639' size={300} style={pumpStyles.icon} />
