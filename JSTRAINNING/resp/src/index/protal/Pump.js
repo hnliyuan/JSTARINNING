@@ -6,6 +6,7 @@ import { View ,TouchableHighlight,Text, StyleSheet, ScrollView, RefreshControl }
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PumpRunning from './PumpRunning'
+import PerformanceCurve from './PerformanceCurve'
 
 class Pump extends Component{
 
@@ -41,7 +42,7 @@ class Pump extends Component{
 
     _onRefresh = () => {
         this.setState({isRefreshing: true});
-        this.refs.pumpRunning.refreshData();
+        this.refs.pumpRefs.refreshData();
     }
 
     render() {
@@ -68,13 +69,14 @@ class Pump extends Component{
                             />
                      }
                 >
-                    <PumpRunning ref="pumpRunning" pump={pump} changeIsRefreshing={this.changeIsRefreshing}/>
+                    <PumpRunning ref="pumpRefs" pump={pump} changeIsRefreshing={this.changeIsRefreshing}/>
                 </ScrollView>
-                <ScrollView tabLabel='性能曲线'>
-                    <Icon name='logo-android' color='#A4C639' size={300} style={pumpStyles.icon} />
-                    <Icon name='logo-android' color='black' size={300} style={pumpStyles.icon} />
-                    <Icon name='logo-android' color='brown' size={300} style={pumpStyles.icon} />
+                <ScrollView tabLabel='性能曲线'
+                >
+                    <PerformanceCurve ref="pumpRefs"  pump={pump} changeIsRefreshing={this.changeIsRefreshing}/>
                 </ScrollView>
+
+
                 <ScrollView tabLabel='历史数据'>
                     <Icon name='logo-android' color='#A4C639' size={300} style={pumpStyles.icon} />
                     <Icon name='logo-android' color='black' size={300} style={pumpStyles.icon} />

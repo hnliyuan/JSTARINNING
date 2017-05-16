@@ -3,7 +3,7 @@
  */
 
 import React , { Component } from 'react'
-import {View,StyleSheet,Text } from 'react-native'
+import {View,StyleSheet,Text, Alert } from 'react-native'
 import Util from '../../util/Util'
 import { List, ListItem } from 'react-native-elements'
 import * as Progress from 'react-native-progress';

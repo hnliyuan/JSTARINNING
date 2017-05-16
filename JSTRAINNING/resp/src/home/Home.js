@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, TouchableHighlight, View, StyleSheet, Platform, Image, Dimensions, StatusBar, BackAndroid, Alert} from 'react-native'
+import { ScrollView, TouchableHighlight, View, StyleSheet, Platform, Image, Dimensions, StatusBar,  Alert} from 'react-native'
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import Register from './Register'
 import ForgetPassWord from './ForgetPassWord'
@@ -81,21 +81,15 @@ class Home extends Component {
   }
 	
 	_submitForm = () => {
-		if(this.state.username && this.state.password){
+		// if(this.state.username && this.state.password){
 				var rsa = new RSAKey();
 				var publicKey = {
 					n:this.state.n,
 					e:this.state.e
 				}
 				rsa.setPublicString(JSON.stringify(publicKey));
-				var encryptedPwd = rsa.encrypt(MD5(this.state.password));
-//		    const bits = 1024;
-//				const exponent = '10001'; // must be a string. This is hex string. decimal = 65537
-//				var rsa_token = new RSAKey();
-//				rsa_token.generate(bits, exponent);
-//				var publicKey_token = rsa_token.getPublicString(); // return json encoded string
-//				var privateKey_token = rsa_token.getPrivateString(); // return json encoded string
-				fetch('http://192.168.48.99:8088/reactNativeApp/Login!login.action?username='+this.state.username+'&&password='+encryptedPwd+'').then((response) =>{
+				var encryptedPwd = rsa.encrypt(MD5('hnrsyw'));
+				fetch('http://192.168.48.99:8088/reactNativeApp/Login!login.action?username=hnrsyw&&password='+encryptedPwd+'').then((response) =>{
 					if(200 === response.status){
 						data = JSON.parse(response._bodyInit);
 						if('1' === data.status){
@@ -115,16 +109,16 @@ class Home extends Component {
 					}
 					
 				}).catch((error) => {
-        	console.error(error);
-      	})
+        	        console.error(error);
+      	        })
 				
-		}else{
-
-			Alert.alert(
-			  '提示信息',
-			  '帐号密码不能为空.'
-			)
-		}
+		// }else{
+        //
+		// 	Alert.alert(
+		// 	  '提示信息',
+		// 	  '帐号密码不能为空.'
+		// 	)
+		// }
 		
 		
 	}

@@ -31,8 +31,8 @@ export default class AppContainer extends Component{
 	}
 	
 	render(){
-		
-		
+
+    	console.ignoredYellowBox = ['Warning: BackAndroid']
 		const {  loginState } = this.state;
 
 		switch(  loginState  )  {

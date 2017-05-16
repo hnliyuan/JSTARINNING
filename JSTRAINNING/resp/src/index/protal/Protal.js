@@ -52,45 +52,9 @@ class Protal extends Component{
             )
         }
 
-    }).catch((error) => {
-            console.error(error);
-    })
-
-
-//      Geolocation.getCurrentPosition().then(
-//          (data) => {
-//              this.setState({
-//                  zoom:18,
-//                  markers:[{
-//                      latitude:data.latitude,
-//                      longitude:data.longitude,
-//                      title:'我的位置'
-//                  },{
-//                      latitude:data.latitude+0.0001,
-//                      longitude:data.longitude,
-//                      title:'1#水泵'
-//                  },{
-//                      latitude:data.latitude+0.0002,
-//                      longitude:data.longitude,
-//                      title:'2#水泵'
-//                  },{
-//                      latitude:data.latitude,
-//                      longitude:data.longitude+0.002,
-//                      title:'3#水泵'
-//                  },{
-//                      latitude:data.latitude+0.001,
-//                      longitude:data.longitude+0.001,
-//                      title:'4#水泵'
-//                  }],
-//                  center:{
-//                      latitude:data.latitude,
-//                      longitude:data.longitude,
-//                  }
-//              })
-//          }
-//      ).catch(error => {
-//          console.warn(error,'error')
-//      })
+        }).catch((error) => {
+                console.error(error);
+        })
     }
 
     _getPumpsByArea = (option) => {
@@ -101,88 +65,71 @@ class Protal extends Component{
     for(var i = 0 ; i<data.length ; i++){
     var value = data[i];
     markers.push({
-                     latitude:value.latitude,
-    longitude:value.longitude,
-    title:value.name+'@'+value.id,
-})
-}
+         latitude:value.latitude,
+        longitude:value.longitude,
+        title:value.name+'@'+value.id,
+    })
+    }
 
 
-var center = {
-    latitude:markers[0].latitude,
-    longitude:markers[0].longitude
-}
+    var center = {
+        latitude:markers[0].latitude,
+        longitude:markers[0].longitude
+    }
 
 
-this.setState({pumpData:data,markers:markers,center:center,zoom:15})
+    this.setState({pumpData:data,markers:markers,center:center,zoom:15})
 
 //						alert(JSON.stringify(data.data));
 //						this.setState({data:data.data});
-}else{
-    Alert.alert(
-        '请求出错',
-        '请求发生未知错误',
-    )
-}
+    }else{
+        Alert.alert(
+            '请求出错',
+            '请求发生未知错误',
+        )
+    }
 
-}).catch((error) => {
-    console.error(error);
-})
-this.setState({textInputValue:option.label})
-}
+    }).catch((error) => {
+        console.error(error);
+    })
+    this.setState({textInputValue:option.label})
+    }
 
-render() {
-//		let index = 0;
-//      const data = [
-//          { key: index++, section: true, label: '湖南' },
-//          { key: index++, label: '长沙' },
-//          { key: index++, label: '湘潭' },
-//          { key: index++, label: '株洲' },
-//          { key: index++, label: '浏阳' },
-//          { key: index++, label: '益阳' },
-//          { key: index++, section: true, label: '广东' },
-//          { key: index++, label: '广州' },
-//          { key: index++, label: '佛山' },
-//          { key: index++, label: '东莞' },
-//          { key: index++, label: '珠海' },
-//          { key: index++, label: '韶关' },
-//          { key: index++, label: '清远' },
-//          { key: index++, label: '梅州' },
-//          { key: index++, label: '惠州' }
-//      ];
+    render() {
+
 
     const { navigate } = this.props.navigation
     const { toggleSideMenu } = this.props
     const { mapShow } = this.state
     return (
         <MenuContext style={{ flex: 1 }}>
-<View style={styles.container}>
-<View style={styles.header}>
-<View style={styles.leftBackView}>
-<Icon
-    name='account-circle'
-    color='white'
-    size={32}
-    onPress={() => toggleSideMenu()} />
-</View>
-    <View style={styles.centerTitle}>
-<ModalPicker
-    data={this.state.data}
-    initValue={this.state.initValue}
-    onChange={(option)=>{ this._getPumpsByArea(option)}}
->
-<TextInput
-    style={styles.centerText}
-    editable={false}
-    placeholder = {this.state.initValue}
-    placeholderTextColor = 'white'
-    value={this.state.textInputValue} />
+        <View style={styles.container}>
+        <View style={styles.header}>
+        <View style={styles.leftBackView}>
+        <Icon
+            name='account-circle'
+            color='white'
+            size={32}
+            onPress={() => toggleSideMenu()} />
+        </View>
+            <View style={styles.centerTitle}>
+        <ModalPicker
+            data={this.state.data}
+            initValue={this.state.initValue}
+            onChange={(option)=>{ this._getPumpsByArea(option)}}
+        >
+        <TextInput
+            style={styles.centerText}
+            editable={false}
+            placeholder = {this.state.initValue}
+            placeholderTextColor = 'white'
+            value={this.state.textInputValue} />
 
-</ModalPicker>
+        </ModalPicker>
 
 
-    </View>
-    <View style={styles.rightBackView}>
+        </View>
+        <View style={styles.rightBackView}>
 
 <Menu onSelect={(value) => alert(`User selected the number ${value}`)}>
 <MenuTrigger>
@@ -230,25 +177,25 @@ render() {
     </View>
     </View>
     <View style={styles.center}>
-<MapView
-    trafficEnabled={this.state.trafficEnabled}
-    baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-    zoom={this.state.zoom}
-    mapType={this.state.mapType}
-    center={this.state.center}
-    marker={this.state.marker}
-    markers={this.state.markers}
-    style={styles.map}
-    onMarkerClick={(e)=>{
+    <MapView
+        trafficEnabled={this.state.trafficEnabled}
+        baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+        zoom={this.state.zoom}
+        mapType={this.state.mapType}
+        center={this.state.center}
+        marker={this.state.marker}
+        markers={this.state.markers}
+        style={styles.map}
+        onMarkerClick={(e)=>{
 
-        if(this.state.markerClickRecord.title === e.title){
-            navigate('Pump',{pump:e});
-        }else{
-            this.setState({markerClickRecord:e})
-        }
+            if(this.state.markerClickRecord.title === e.title){
+                navigate('Pump',{pump:e});
+            }else{
+                this.setState({markerClickRecord:e})
+            }
 
-    }}
->
+        }}
+    >
 </MapView>
     </View>
     </View>
