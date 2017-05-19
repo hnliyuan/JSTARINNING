@@ -58,41 +58,34 @@ class Protal extends Component{
     }
 
     _getPumpsByArea = (option) => {
-    fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey='+option.key+'').then((response) =>{
-    if(200 === response.status){
-    data = JSON.parse(response._bodyInit).data;
-    var markers = [];
-    for(var i = 0 ; i<data.length ; i++){
-    var value = data[i];
-    markers.push({
-         latitude:value.latitude,
-        longitude:value.longitude,
-        title:value.name+'@'+value.id,
-    })
-    }
+        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey='+option.key+'').then((response) =>{
+        if(200 === response.status){
+            data = JSON.parse(response._bodyInit).data;
+            var markers = [];
+            for(var i = 0 ; i<data.length ; i++){
+            var value = data[i];
+                markers.push({
+                     latitude:value.latitude,
+                    longitude:value.longitude,
+                    title:value.name+'@'+value.id,
+                })
+            }
+            var center = {
+                latitude:markers[0].latitude,
+                longitude:markers[0].longitude
+            }
+            this.setState({pumpData:data,markers:markers,center:center,zoom:15})
+        }else{
+            Alert.alert(
+                '请求出错',
+                '请求发生未知错误',
+            )
+        }
 
-
-    var center = {
-        latitude:markers[0].latitude,
-        longitude:markers[0].longitude
-    }
-
-
-    this.setState({pumpData:data,markers:markers,center:center,zoom:15})
-
-//						alert(JSON.stringify(data.data));
-//						this.setState({data:data.data});
-    }else{
-        Alert.alert(
-            '请求出错',
-            '请求发生未知错误',
-        )
-    }
-
-    }).catch((error) => {
-        console.error(error);
-    })
-    this.setState({textInputValue:option.label})
+        }).catch((error) => {
+            console.error(error);
+        })
+        this.setState({textInputValue:option.label})
     }
 
     render() {

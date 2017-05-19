@@ -15,51 +15,49 @@ class PumpArguments extends Component{
     constructor(props){
         super(props)
         this.state = {
-            pumpArgsData : []
+            pumpArgs : []
         }
     }
 
     refreshData = () => {
         pumpId = this.props.pump.title.substring(this.props.pump.title.indexOf('@') + 1,this.props.pump.title.length);
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpRunningDataById.action?pumpId='+pumpId+'').then((response) =>{
+        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpArgumentsById.action?pumpId='+pumpId+'').then((response) =>{
+
             if(200 === response.status){
-            data = JSON.parse(response._bodyInit);
-
-            let pumpArgsData = data.pumpArgsData;
-
-            let formartPumpArgsData = [];
-
-
-            if(pumpArgsData){
-                // for(var i = 0 ; i < pumpArgsData.length; i++){
-                //     let args = pumpArgsData[i];
-                //     let value = new Number(args.value).toFixed(3);
-                //     formartPowerData.push({
-                //         title:power.name+ '('+power.unit+')',
-                //         icon:power.icon,
-                //         rightTitle:value,
-                //     })
-                // }
-            }
-            if(formartPumpArgsData.length>0){
-                this.setState({pumpArgsData:formartPumpArgsData});
-                this.props.changeIsRefreshing(false);
-
-            }
-        }else{
-            Alert.alert(
-                '请求出错',
-                '请求发生未知错误',
-            )
-        }
-
-        }).catch((error) => {
+                data = JSON.parse(response._bodyInit);
+                let pumpArgs = data.pumpArgs;
+                let formartPumpArgsData = [];
+                if(pumpArgs){
+                    for(var i = 0 ; i < pumpArgs.length; i++){
+                        let args = pumpArgs[i]
+                        let value = args.value;
+                        let unit = args.unit;
+                        if(args.unit){
+                            unit = '('+args.unit+')';
+                        }
+                        formartPumpArgsData.push({
+                            title:args.name+ unit,
+                            icon:args.icon,
+                            rightTitle:value,
+                        })
+                    }
+                }
+                if(formartPumpArgsData.length>0){
+                    this.setState({pumpArgs:formartPumpArgsData});
+                }
+            }else{
                 Alert.alert(
-                '请求出错',
-                '请求发生未知错误',
-            )
-            this.props.changeIsRefreshing(false);
+                    '请求出错',
+                    '请求发生未知错误',
+                )
+            }
         })
+        // .catch((error) => {
+        //         Alert.alert(
+        //         '请求出错',
+        //         error,
+        //     )
+        // })
     }
 
     componentDidMount(){
@@ -69,33 +67,25 @@ class PumpArguments extends Component{
     render(){
 
         const { pump } = this.props
-        if(this.state.pumpArgs.length == 0 ){
-            return (
-                <ProcessHolding/>
-            )
-        }
-
-
         return (
             <View style={pumpArgsStyles.container}>
                 <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>铭牌参数</Text>
                 <List>
-                {
-                    this.state.pumpArgs.map((item, i) => (
-                        <ListItem
-                        key={i}
-                        title={item.title}
-                        leftIcon={{name: item.icon}}
-                        rightTitle={item.rightTitle}
-                        rightTitleStyle={{color:'white'}}
-                        rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                        rightIcon={{style:{display:'none'}}}
-                        hideChevron={true}
-                            />
-                    ))
-                }
+                    {
+                        this.state.pumpArgs.map((item, i) => (
+                            <ListItem
+                                key={i}
+                                title={item.title}
+                                leftIcon={{name: item.icon,style:{width:24}}}
+                                rightTitle={item.rightTitle ? item.rightTitle + ' ' : ' '}
+                                rightTitleStyle={{color:'white'}}
+                                rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
+                                rightIcon={{style:{display:'none'}}}
+                                hideChevron={true}
+                                />
+                        ))
+                    }
                 </List>
-
             </View>
         )
     }

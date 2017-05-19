@@ -78,6 +78,8 @@ class PumpRunning extends Component{
                         let power = powerData[i];
                         let value = new Number(power.value).toFixed(3);
                         formartPowerData.push({
+                            id:power.id,
+                            dType:power.dType,
                             title:power.name+ '('+power.unit+')',
                             icon:power.icon,
                             rightTitle:value,
@@ -92,6 +94,8 @@ class PumpRunning extends Component{
                         let voltage = voltageData[i];
                         let value = new Number(voltage.value).toFixed(3);
                         formartVoltageData.push({
+                            id:voltage.id,
+                            dType:voltage.dType,
                             title:voltage.name+ '('+voltage.unit+')',
                             icon:voltage.icon,
                             rightTitle:value,
@@ -142,7 +146,7 @@ class PumpRunning extends Component{
     render(){
 
         const { pump } = this.props
-
+        const { navigate } = this.props
 
 
         if(this.state.powerData.length == 0 ){
@@ -172,16 +176,18 @@ class PumpRunning extends Component{
                         <ListItem
                         key={i}
                         title={item.title}
-                        leftIcon={{name: item.icon}}
-                        rightTitle={item.rightTitle}
+                        leftIcon={{name: item.icon,style:{width:24}}}
+                        rightTitle={item.rightTitle ? item.rightTitle + ' ' : ' '}
                         rightTitleStyle={{color:'white'}}
                         rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                        rightIcon={{style:{display:'none'}}}
-                        hideChevron={true}
-
+                        // rightIcon={{style:{display:'none'}}}
+                        // hideChevron={true}
+                        onPress={()=>{
+                            navigate('HistoryCurvs',{pump:pump,title:item.title, meterId:item.id, dType:item.dType})
+                        }}
                             />
                     ))
-             }
+                 }
             </List>
             <Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>计算数据</Text>
             <List>
@@ -190,12 +196,15 @@ class PumpRunning extends Component{
                     <ListItem
                     key={i}
                     title={item.title}
-                    leftIcon={{name: item.icon}}
-                    rightTitle={item.rightTitle}
+                    leftIcon={{name: item.icon,style:{width:24}}}
+                    rightTitle={item.rightTitle ? item.rightTitle + ' ' : ' '}
                     rightTitleStyle={{color:'white'}}
                     rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                    rightIcon={{style:{display:'none'}}}
-                    hideChevron={true}
+                    // rightIcon={{style:{display:'none'}}}
+                    // hideChevron={true}
+                    onPress={()=>{
+                        navigate('HistoryCurvs',{pump:pump,title:item.title, meterId:item.id, dType:item.dType})
+                    }}
                         />
                 ))
             }
@@ -207,8 +216,8 @@ class PumpRunning extends Component{
                     <ListItem
                     key={i}
                     title={item.title}
-                    leftIcon={{name: item.icon}}
-                    rightTitle={item.rightTitle}
+                    leftIcon={{name: item.icon,style:{width:24}}}
+                    rightTitle={item.rightTitle ? item.rightTitle + ' ' : ' '}
                     rightTitleStyle={{color:'white'}}
                     rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
                     rightIcon={{style:{display:'none'}}}

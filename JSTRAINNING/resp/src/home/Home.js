@@ -12,6 +12,7 @@ import PrivateData from '../../src/drawer/PrivateData'
 import History from '../../src/drawer/History'
 import Index from '../../src/index/Index'
 import Pump from '../../src/index/protal/Pump'
+import HistoryCurvs from '../../src/index/protal/HistoryCurvs'
 import Setting from '../../src/drawer/Setting'
 import UserSetting from '../../src/drawer/UserSetting'
 import {
@@ -205,6 +206,7 @@ const SimpleApp = StackNavigator({
   UserSetting: {screen:UserSetting},
   Setting: {screen:Setting},
   Pump: {screen:Pump},
+  HistoryCurvs: {screen:HistoryCurvs},
 });
 
 
