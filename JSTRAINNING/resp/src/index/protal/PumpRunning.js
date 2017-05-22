@@ -110,6 +110,9 @@ class PumpRunning extends Component{
                             trans.transUnit= '立方米';
                         }
                         formartTransDatas.push({
+                            transId:trans.transId,
+                            transName:trans.transName,
+                            dtype:trans.dtype,
                             title:trans.transName+ '('+trans.transUnit+')',
                             icon:'av-timer',
                             rightTitle:value,
@@ -220,8 +223,11 @@ class PumpRunning extends Component{
                     rightTitle={item.rightTitle ? item.rightTitle + ' ' : ' '}
                     rightTitleStyle={{color:'white'}}
                     rightTitleContainerStyle={{backgroundColor:'#08527a',borderRadius: 5}}
-                    rightIcon={{style:{display:'none'}}}
-                    hideChevron={true}
+                    // rightIcon={{style:{display:'none'}}}
+                    // hideChevron={true}
+                    onPress={()=>{
+                        navigate('HistoryCurvs',{pump:pump,title:item.transName, meterId:item.transId, dType:item.dtype})
+                    }}
                         />
                 ))
             }
