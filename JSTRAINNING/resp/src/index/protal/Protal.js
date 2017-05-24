@@ -16,8 +16,6 @@ import {
     SideMenu
 } from 'react-native-elements'
 
-
-
 class Protal extends Component{
 
     constructor (props) {
@@ -31,16 +29,14 @@ class Protal extends Component{
             markers:[],
             zoom:5,
             center:null,
-            initValue:'请求数据..',
+            initValue:'选择省份..',
             pumpData:[],
             markerClickRecord:{},
         };
     }
 
     componentDidMount() { // 获取位置
-
         //发起请求获得当前帐号所有地区的数据
-
         fetch('http://192.168.48.99:8088/reactNativeApp/Search!getAreas.action').then((response) =>{
             if(200 === response.status){
             data = JSON.parse(response._bodyInit);

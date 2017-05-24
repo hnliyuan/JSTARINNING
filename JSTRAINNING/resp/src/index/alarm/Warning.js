@@ -13,12 +13,19 @@ export default class Warning extends React.PureComponent {
 			start:1,
 			limit:10,
             refreshing:false,
-            endRefreshing:false,
+			updating:false,
 		}
 	}
 
 	filterWarning = (data) => {
+
 		return data;
+	}
+
+	componentDidUpdate(){
+		if(this.state.updating){
+			this.setState({refreshing:false,updating:false});
+		}
 	}
 
 
@@ -37,8 +44,7 @@ export default class Warning extends React.PureComponent {
 					this.setState({
                         warningList:tempData,
                         start:startIndex,
-                        refreshing:false,
-                        endRefreshing:false,
+                        updating:true,
 					});
 				}else{
                     ToastAndroid.show('没有更多的数据', ToastAndroid.SHORT, ToastAndroid.CENTER);
@@ -85,7 +91,8 @@ export default class Warning extends React.PureComponent {
     							refreshing={this.state.refreshing}
     							getItemLayout={(data, index) => ( {length: 110, offset: 110 * index, index} )}
     							onEndReached={this._onEndReached}
-    							onEndReachedThreshold={1}
+								initialNumToRender={6}
+    							onEndReachedThreshold={110}
 							/>
 					</View>
 				}
@@ -97,19 +104,15 @@ export default class Warning extends React.PureComponent {
 	}
 
 	_onEndReached = () =>{
-		if(!this.state.endRefreshing && !this.state.refreshing) {
-            this.setState({endRefreshing:true},
-                ()=>{
-            		this.searchWarning(this.state.start + 1)
-           	 	})
+		if(!this.state.refreshing){
+            this.searchWarning(this.state.start + 1);
 		}
 	}
 
 	_onRefresh = () => {
-    	if(!this.state.endRefreshing && !this.state.refreshing) {
+    	if(!this.state.refreshing) {
             this.searchWarning(1);
         }
-
 	}
 
 	_keyExtractor = (item, index) => {

@@ -76,11 +76,18 @@ class PumpRunning extends Component{
                 if(powerData){
                     for(var i = 0 ; i < powerData.length; i++){
                         let power = powerData[i];
-                        let value = new Number(power.value).toFixed(3);
+                        let value = '--';
+                        if(power.value && power.value!=value){
+                            value = new Number(power.value).toFixed(3);
+                        }
+                        let unit = '';
+                        if(power.unit){
+                            unit = '('+power.unit+')';
+                        }
                         formartPowerData.push({
                             id:power.id,
                             dType:power.dType,
-                            title:power.name+ '('+power.unit+')',
+                            title:power.name+ unit,
                             icon:power.icon,
                             rightTitle:value,
                         })
@@ -92,11 +99,18 @@ class PumpRunning extends Component{
                 if(voltageData){
                     for(var i = 0 ; i < voltageData.length; i++){
                         let voltage = voltageData[i];
-                        let value = new Number(voltage.value).toFixed(3);
+                        let value = '--';
+                        if(voltage.value){
+                            value = new Number(voltage.value).toFixed(3);
+                        }
+                        let unit = '';
+                        if(voltage.unit){
+                            unit = '('+voltage.unit+')';
+                        }
                         formartVoltageData.push({
                             id:voltage.id,
                             dType:voltage.dType,
-                            title:voltage.name+ '('+voltage.unit+')',
+                            title:voltage.name+ unit,
                             icon:voltage.icon,
                             rightTitle:value,
                         })
@@ -105,15 +119,24 @@ class PumpRunning extends Component{
                 if(transDatas){
                     for(var i = 0 ; i < transDatas.length; i++){
                         let trans = transDatas[i];
-                        let value = new Number(trans.transVal).toFixed(3);
-                        if(trans.transName === '流量'){
-                            trans.transUnit= '立方米';
+                        let value = '--';
+                        if(trans.value){
+                            value = new Number(trans.value).toFixed(3);
                         }
+
+                        let unit = '';
+                        if(trans.transName == '流量' || trans.transName=='出口流量'){
+                            unit = '(立方米/h)';
+                        }
+                        else if (trans.transUnit){
+                            unit = '('+trans.transUnit+')';
+                        }
+
                         formartTransDatas.push({
                             transId:trans.transId,
                             transName:trans.transName,
                             dtype:trans.dtype,
-                            title:trans.transName+ '('+trans.transUnit+')',
+                            title:trans.transName + unit,
                             icon:'av-timer',
                             rightTitle:value,
                         })
@@ -228,7 +251,7 @@ class PumpRunning extends Component{
                     onPress={()=>{
                         navigate('HistoryCurvs',{pump:pump,title:item.transName, meterId:item.transId, dType:item.dtype})
                     }}
-                        />
+                    />
                 ))
             }
         </List>
