@@ -1,213 +1,201 @@
-import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, TouchableHighlight, Text, StatusBar, WebView,TextInput } from 'react-native'
+import React,{ Component } from 'react'
+import {View, ListView, Text, StyleSheet, FlatList,Alert,ToastAndroid} from 'react-native'
 import Util from '../../util/Util'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {
-    MapView, 
-    MapTypes, 
-    Geolocation 
-} from 'react-native-baidu-map';
-import ModalPicker from 'react-native-modal-picker'
 
-import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
-import {
-  List,
-  ListItem,
-  SideMenu
-} from 'react-native-elements'
+export default class Warning extends React.PureComponent {
+
+	constructor(props){
+		super(props);
+		this.state = {
+			memoryList:[],
+			warningList:[],
+			start:1,
+			limit:10,
+            refreshing:false,
+            endRefreshing:false,
+		}
+	}
+
+	filterWarning = (data) => {
+		return data;
+	}
 
 
+	searchWarning=(startIndex)=>{
+		this.setState({refreshing:true});
+		fetch('http://192.168.48.99:8088/reactNativeApp/DeepSearch!getAlarmJsonDatas.action?alarmLimit='+this.state.limit+'&'+'alarmStart='+startIndex).then((response) =>{
+			if(200 === response.status){
+				data = JSON.parse(response._bodyInit);
+				if(data && data.datas.length>0){
+					let tempData = data.datas;
+					if(startIndex > this.state.start){
+						if(this.state.warningList.length > 0){
+							tempData = this.state.warningList.concat(data.datas);
+						}
+					}
+					this.setState({
+                        warningList:tempData,
+                        start:startIndex,
+                        refreshing:false,
+                        endRefreshing:false,
+					});
+				}else{
+                    ToastAndroid.show('没有更多的数据', ToastAndroid.SHORT, ToastAndroid.CENTER);
+				}
+		}
+		}).catch((error) => {
+			Alert.alert(
+			'请求出错',
+			error,
+		)
+		})
+	}
 
-class Warning extends Component{
-	
-    constructor (props) {
-	    super(props)
-        this.state = {
-            mayType: MapTypes.NORMAL,
-            zoom: 15, 
-            trafficEnabled: false,
-            baiduHeatMapEnabled: false,
-            textInputValue:''
-        };
-  	}
-    
-	componentDidMount() { // 获取位置
-        Geolocation.getCurrentPosition().then(
-            (data) => {
-                this.setState({
-                    zoom:18,
-                    markers:[{
-                        latitude:data.latitude,
-                        longitude:data.longitude,
-                        title:'我的位置'
-                    }],
-                    center:{
-                        latitude:data.latitude,
-                        longitude:data.longitude,
-                    }
-                })
-            }
-        ).catch(error => {
-            console.warn(error,'error')
-        })
-        
-    }
-    
-	render() {
-		let index = 0;
-        const data = [
-            { key: index++, section: true, label: '湖南' },
-            { key: index++, label: '长沙' },
-            { key: index++, label: '湘潭' },
-            { key: index++, label: '株洲' },
-            { key: index++, label: '浏阳' },
-            { key: index++, label: '益阳' },
-            { key: index++, section: true, label: '广东' },
-            { key: index++, label: '广州' },
-            { key: index++, label: '佛山' },
-            { key: index++, label: '东莞' },
-            { key: index++, label: '珠海' },
-            { key: index++, label: '韶关' },
-            { key: index++, label: '清远' },
-            { key: index++, label: '梅州' },
-            { key: index++, label: '惠州' }
-        ];
-
-		const { navigate } = this.props.navigation
-		const { toggleSideMenu } = this.props
-		const { mapShow } = this.state
+	componentDidMount(){
+		this.searchWarning(1);
+	}
+	render(){
+        const { toggleSideMenu } = this.props;
+        const { navigate } = this.props.navigation;
 		return (
-			<MenuContext style={{ flex: 1 }}>
-				<View style={styles.container}>
-					<View style={styles.header}>
-						<View style={styles.leftBackView}>
-			        		<Icon
-							  name='account-circle'
-							  color='white'
-							  size={32}
-							  onPress={() => toggleSideMenu()} />
-						</View>
-						<View style={styles.centerTitle}>
-			                <ModalPicker
-			                    data={data}
-			                    initValue="选择地区..."
-			                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}
-		                    >
-			                    <TextInput
-			                        style={styles.centerText}
-			                        editable={false}
-			                        placeholder = "选择地区..."
-			                        placeholderTextColor = 'white'
-			                        value={this.state.textInputValue} />
-			                        
-			                </ModalPicker>
-							
-							
-						</View>
-						<View style={styles.rightBackView}>
-							
-								<Menu onSelect={(value) => alert(`User selected the number ${value}`)}>
-									<MenuTrigger>
-										<Icon
-										  name='add-circle'
-										  color='white'
-										  size={32}
-										  />
-								    </MenuTrigger>
-								    <MenuOptions optionsContainerStyle={{ marginTop:45 ,borderRadius: 10,backgroundColor:'#0b77b2',width:120}}>
-								        <MenuOption value={1} style={{borderBottomWidth:0.5,borderBottomColor:'white'}}>
-								        	<View style={{flexDirection: 'row'}}>
-								        		 <Icon
-												  name='search'
-												  color='white'
-												  size={20}
-												  />
-								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查询水泵</Text>
-								        	</View>
-								         
-								        </MenuOption>
-								        <MenuOption value={2} style={{borderBottomWidth:0.5,borderBottomColor:'white'}} >
-												<View style={{flexDirection: 'row'}}>
-								        		 <Icon
-												  name='insert-drive-file'
-												  color='white'
-												  size={20}
-												  />
-								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查看报表</Text>
-								        	</View>
-								        </MenuOption>
-								        <MenuOption value={3} style={{}} >
-												<View style={{flexDirection: 'row'}}>
-								        		 <Icon
-												  name='wallpaper'
-												  color='white'
-												  size={20}
-												  />
-								          		<Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>扫一扫</Text>
-								        	</View>
-								        </MenuOption>
-							      	</MenuOptions>
-								</Menu>
-							
-						</View>
-					</View>
-						<View style={styles.center}>
-							
-						</View>
+            <View style={warningStyles.container}>
+				<View style={warningStyles.searchContent}>
+					<Icon
+						name='account-circle'
+						color='white'
+						size={32}
+						style={{marginLeft:10,width:40}}
+						onPress={() => toggleSideMenu()} />
+					<Text style={{width:Util.size.width - 100,color:'white',textAlign:'center'}} >实时告警信息中心</Text>
+					<Icon
+						name='filter-list'
+						color='white'
+						size={32}
+						onPress={() => {
+						}} />
 				</View>
-			</MenuContext>
+				{this.state.warningList.length<=0 ? <View style={warningStyles.searchResult}><Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>正在查询请稍后</Text></View> :
+					<View style={warningStyles.container}>
+							<FlatList
+								data={this.state.warningList}
+								keyExtractor={this._keyExtractor}
+								renderItem={this._renderItem}
+								onRefresh={this._onRefresh}
+    							refreshing={this.state.refreshing}
+    							getItemLayout={(data, index) => ( {length: 110, offset: 110 * index, index} )}
+    							onEndReached={this._onEndReached}
+    							onEndReachedThreshold={1}
+							/>
+					</View>
+				}
+
+
+
+			</View>
 		)
 	}
-	
-	
+
+	_onEndReached = () =>{
+		if(!this.state.endRefreshing && !this.state.refreshing) {
+            this.setState({endRefreshing:true},
+                ()=>{
+            		this.searchWarning(this.state.start + 1)
+           	 	})
+		}
+	}
+
+	_onRefresh = () => {
+    	if(!this.state.endRefreshing && !this.state.refreshing) {
+            this.searchWarning(1);
+        }
+
+	}
+
+	_keyExtractor = (item, index) => {
+		return index;
+	}
+
+	_renderItem = ({item,index}) => {
+		return (
+            <View style={warningStyles.pumpView}>
+				<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
+					<Icon
+						name='warning'
+						color='#08527a'
+						size={60}
+							/>
+				</View>
+				<View style={{flex:4,flexDirection:'column',justifyContent:'center',marginLeft:10}}>
+					<View style={{flexDirection:'row'}}>
+						<Text style={{fontSize:16,color:'black'}}>{item.pumpName}</Text>
+					</View>
+					<View style={{flexDirection:'row'}}>
+						<Text style={{fontSize:12}}>单位 : {item.enterpriseName}</Text>
+					</View>
+					<View style={{flexDirection:'row'}}>
+						<Text style={{fontSize:12}}>监测仪器 : {item.deviceName}</Text>
+					</View>
+					<View style={{flexDirection:'row'}}>
+						<Text style={{fontSize:12}}>告警描述 : <Text style={{color:'#08527a'}}>{item.alarmDesc}</Text></Text>
+					</View>
+				</View>
+				<View style={{flex:4,flexDirection:'column',justifyContent:'center',marginLeft:10}}>
+						<View style={{flexDirection:'row'}}>
+							<Text style={{fontSize:12}}>上限 : {item.thresholdUp}</Text>
+						</View>
+						<View style={{flexDirection:'row'}}>
+							<Text style={{fontSize:12}}>下限 : {item.thresholdDown}</Text>
+						</View>
+						<View style={{flexDirection:'row'}}>
+					<Text style={{fontSize:12}}>告警值 : <Text style={{color:'#08527a'}}>{item.alarmValue}</Text></Text>
+						</View>
+						<View style={{flexDirection:'row'}}>
+					<Text style={{fontSize:12}}>发生时间 : {item.alarmTime}</Text>
+						</View>
+				</View>
+				<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
+					<Icon
+						name='last-page'
+						color='gray'
+						size={36}
+						onPress={()=>{
+							let pump = {title:item.pumpName+'@'+item.pumpId};
+        					this.props.navigation.navigate('Pump',{pump:pump});
+						}}
+					/>
+				</View>
+		</View>
+		)
+	}
 }
 
-styles = StyleSheet.create({
-	container:{
-		flex: 1,
-		flexDirection: 'column',
+const warningStyles = StyleSheet.create({
+    container:{
+        flex:1,
         backgroundColor:'white',
-	},
-    header:{
-        height: 50,
-        width: Util.size.width,
+        flexDirection: 'column',
+    },
+    searchContent:{
+        height:50,
         flexDirection: 'row',
-        backgroundColor: '#08527a'
+        alignItems: 'center',
+        backgroundColor:'#08527a'
     },
-    center:{
-        height: Util.size.height-100-StatusBar.currentHeight,
-        width: Util.size.width,
+    scrollContainer:{
+        backgroundColor:'black'
+    },
+    searchResult:{
+        flex:1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:'white',
+    },
+    pumpView:{
         flexDirection: 'row',
-    },
-    leftBackView:{
-    	height:50,
-        width: Util.size.width/3,
-	    alignItems: 'flex-start',
-	    paddingTop:9,
-	    paddingLeft:9,
-    },
-    rightBackView:{
-    	height:50,
-        width: Util.size.width/3,
-	    alignItems: 'flex-end',
-	    paddingTop:9,
-	    paddingRight:9,
-    },
-    centerTitle:{
-	    height: 50,
-        width: Util.size.width/3,
-    },
-    centerText:{
-	    fontSize: 20,
-	    color: 'white',
-	    textAlign:'center',
-	    paddingTop:10,
-    },
-    map: {
-    	height:Util.size.height-100-StatusBar.currentHeight,
-    	width:Util.size.width,
+        borderTopColor: 'gray',
+        borderTopWidth: 1,
+        margin:5,
     }
-
 })
-
-export default Warning
