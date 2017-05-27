@@ -11,6 +11,8 @@ class Search extends Component{
 			memoryList :[],
 	    	pumpList :[],
 			text:'',
+			waitText:'正在查询请稍后',
+
 		}
   	}
 	componentWillMount(){
@@ -27,7 +29,13 @@ class Search extends Component{
                     filterList.push(item);
                 }
 			}
-            this.setState({text:text.text,pumpList:filterList});
+			let title = this.state.waitText;
+			if(filterList <= 0){
+                title = '根据您输入的关键词没有查询到结果.请重新输入'
+			}
+			//如果有查询结果
+			this.setState({text:text.text,pumpList:filterList,waitText:title});
+
 		}else{
 			if(this.state.memoryList.length>1){
 				this.setState({pumpList:this.state.memoryList})
@@ -53,10 +61,6 @@ class Search extends Component{
 	render() {
     	const { toggleSideMenu } = this.props;
 		const { navigate } = this.props.navigation;
-		if(this.state.pumpList.length <= 0){
-			return (<View style={searchStyles.searchResult}><Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>正在查询请稍后</Text></View>)
-		}else{
-
 
 		return (
 			<View style={searchStyles.container}>
@@ -89,59 +93,61 @@ class Search extends Component{
 
 					}} />
 				</View>
-				<View style={searchStyles.container}>
-						<ScrollView
-							contentContainerStyle={{flexDirection: 'column',marginLeft:10}}
-							/* 不显示垂直方向的滚动条 */
-							showsVerticalScrollIndicator={false}
-							>
-						{
-							this.state.pumpList.map((item, i) => (
-                                <TouchableOpacity  style={searchStyles.pumpView} key={i} onPress={()=>{
-                                	let pump = {title:item.sbms+'@'+item.id};
-									navigate('Pump',{pump:pump});
-								}}>
-										<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
-											<Icon
-												name='av-timer'
-												color='gray'
-												size={60}
-													/>
-										</View>
-										<View style={{flex:8,flexDirection:'column',justifyContent:'center',marginLeft:10}}>
-											<View style={{flexDirection:'row'}}>
-												<Text style={{fontSize:16,color:'black'}}>{item.sbms}</Text>
-											</View>
-											<View style={{flexDirection:'row'}}>
-												<Text style={{fontSize:12}}>地区 : {item.dqms}</Text>
-											</View>
-											<View style={{flexDirection:'row'}}>
-												<Text style={{fontSize:12}}>客户 : {item.dwms}</Text>
-											</View>
-											<View style={{flexDirection:'row'}}>
-												<Text style={{fontSize:12}}>项目 : {item.htms}</Text>
-											</View>
-										</View>
-										<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
-											<Icon
-												name='last-page'
-												color='gray'
-												size={36}
-												onPress={()=>{
-													let pump = {title:item.sbms+'@'+item.id};
-													navigate('Pump',{pump:pump});
-												}}
-												/>
-										</View>
-            					</TouchableOpacity>
-							))
-						}
-						</ScrollView>
-				</View>
+				{
+                    this.state.pumpList.length <= 0 ? <View style={searchStyles.searchResult}><Text style={{width:Util.size.width,textAlign:'center',marginTop:15,fontSize:16,color:'#08527a'}}>{this.state.waitText}</Text></View> :
+							<View style={searchStyles.container}>
+									<ScrollView
+										contentContainerStyle={{flexDirection: 'column',marginLeft:10}}
+										/* 不显示垂直方向的滚动条 */
+										showsVerticalScrollIndicator={false}
+										>
+									{
+										this.state.pumpList.map((item, i) => (
+											<TouchableOpacity  style={searchStyles.pumpView} key={i} onPress={()=>{
+												let pump = {title:item.sbms+'@'+item.id};
+												navigate('Pump',{pump:pump});
+											}}>
+													<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
+														<Icon
+															name='av-timer'
+															color='gray'
+															size={60}
+																/>
+													</View>
+													<View style={{flex:8,flexDirection:'column',justifyContent:'center',marginLeft:10}}>
+														<View style={{flexDirection:'row'}}>
+															<Text style={{fontSize:16,color:'black'}}>{item.sbms}</Text>
+														</View>
+														<View style={{flexDirection:'row'}}>
+															<Text style={{fontSize:12}}>地区 : {item.dqms}</Text>
+														</View>
+														<View style={{flexDirection:'row'}}>
+															<Text style={{fontSize:12}}>客户 : {item.dwms}</Text>
+														</View>
+														<View style={{flexDirection:'row'}}>
+															<Text style={{fontSize:12}}>项目 : {item.htms}</Text>
+														</View>
+													</View>
+													<View style={{flex:2,alignItems:'center',justifyContent:'center'}}>
+														<Icon
+															name='last-page'
+															color='gray'
+															size={36}
+															onPress={()=>{
+																let pump = {title:item.sbms+'@'+item.id};
+																navigate('Pump',{pump:pump});
+															}}
+															/>
+													</View>
+											</TouchableOpacity>
+										))
+									}
+									</ScrollView>
+							</View>
+        		}
 
 			</View>
 		)
-	}
 	}
 }
 

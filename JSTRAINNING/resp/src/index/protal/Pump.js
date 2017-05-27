@@ -52,10 +52,12 @@ class Pump extends Component{
            <ScrollableTabView
             tabBarTextStyle={{color:'#08527a'}}
             tabBarUnderlineStyle={{backgroundColor:'#08527a'}}
+            tabBarBackgroundColor='white'
             style={styles.container}
             renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.7)' />}
             tabBarPosition='overlayTop'>
-                <ScrollView tabLabel='实时数据'
+                <ScrollView
+                    tabLabel='实时数据'
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}

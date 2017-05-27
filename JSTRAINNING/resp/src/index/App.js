@@ -27,7 +27,8 @@ class App extends Component {
     })
   }
   render () {
-    const { selectedTab } = this.state
+    const { selectedTab } = this.state;
+    const { navigate } = this.props.navigation;
     return (
       <Tabs hidesTabTouch>
         <Tab

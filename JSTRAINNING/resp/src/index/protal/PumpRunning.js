@@ -67,7 +67,7 @@ class PumpRunning extends Component{
 
                 let powerData = data.powerData;
                 let voltageData = data.voltageData;
-                let transDatas = data.transDatas[0];
+
 
                 let formartPowerData = [];
                 let formartVoltageData = [];
@@ -116,37 +116,44 @@ class PumpRunning extends Component{
                         })
                     }
                 }
-                if(transDatas){
-                    for(var i = 0 ; i < transDatas.length; i++){
-                        let trans = transDatas[i];
-                        let value = '--';
-                        if(trans.value){
-                            value = new Number(trans.value).toFixed(3);
-                        }
 
-                        let unit = '';
-                        if(trans.transName == '流量' || trans.transName=='出口流量'){
-                            unit = '(立方米/h)';
-                        }
-                        else if (trans.transUnit){
-                            unit = '('+trans.transUnit+')';
-                        }
+                for(var k = 0 ; k < data.transDatas.length ; k++){
+                    let transDatas = data.transDatas[k];
+                    if(transDatas){
 
-                        formartTransDatas.push({
-                            transId:trans.transId,
-                            transName:trans.transName,
-                            dtype:trans.dtype,
-                            title:trans.transName + unit,
-                            icon:'av-timer',
-                            rightTitle:value,
-                        })
+                        for(var i = 0 ; i < transDatas.length; i++){
+                            let trans = transDatas[i];
+                            let value = '--';
+                            if(trans.value){
+                                value = new Number(trans.value).toFixed(3);
+                            }
+
+                            let unit = '';
+                            if(trans.transName == '流量' || trans.transName=='出口流量'){
+                                unit = '(立方米/h)';
+                            }
+                            else if (trans.transUnit.indexOf('sup') != -1){
+                                unit =  '(立方米/h)';
+                            }
+                            else if (trans.transUnit){
+                                unit = '('+trans.transUnit+')';
+                            }
+                            formartTransDatas.push({
+                                transId:trans.transId,
+                                transName:trans.transName,
+                                dtype:trans.dtype,
+                                title:trans.transName + unit,
+                                icon:'av-timer',
+                                rightTitle:value,
+                            })
+                        }
                     }
                 }
+
 
                 if(formartPowerData.length>0){
                     this.setState({powerData:formartPowerData,voltageData:formartVoltageData,transDatas:formartTransDatas});
                     this.props.changeIsRefreshing(false);
-
                 }
             }else{
                 Alert.alert(
