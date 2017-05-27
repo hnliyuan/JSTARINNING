@@ -41,6 +41,7 @@ class Protal extends Component{
             if(200 === response.status){
             data = JSON.parse(response._bodyInit);
             this.setState({data:data.data});
+            this._getAllPumpsByArea();
         }else{
             Alert.alert(
                 '请求出错',
@@ -50,6 +51,32 @@ class Protal extends Component{
 
         }).catch((error) => {
                 console.error(error);
+        })
+    }
+
+    _getAllPumpsByArea = () =>{
+        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey=0').then((response) =>{
+            if(200 === response.status){
+                data = JSON.parse(response._bodyInit).data;
+                var markers = [];
+                for(var i = 0 ; i<data.length ; i++){
+                    var value = data[i];
+                    markers.push({
+                                latitude:value.latitude,
+                                longitude:value.longitude,
+                                title:value.name+'@'+value.id,
+                    })
+                }
+                this.setState({pumpData:data,markers:markers})
+            }else{
+                Alert.alert(
+                    '请求出错',
+                    '请求发生未知错误',
+                )
+            }
+
+        }).catch((error) => {
+            console.error(error);
         })
     }
 
