@@ -40,7 +40,7 @@ class Search extends Component{
 			if(this.state.memoryList.length>1){
 				this.setState({pumpList:this.state.memoryList})
 			}
-            fetch('http://192.168.48.99:8088/reactNativeApp/Search!getAllPumps.action').then((response) =>{
+            fetch(global.webUrl + '/reactNativeApp/Search!getAllPumps.action').then((response) =>{
                 if(200 === response.status){
                 	//地区、客户、项目、水泵名称
                 	data = JSON.parse(response._bodyInit);

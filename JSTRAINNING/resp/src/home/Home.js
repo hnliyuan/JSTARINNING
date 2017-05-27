@@ -67,7 +67,7 @@ class Home extends Component {
 	}
 	
 	_getPublickKey = () => {
-    return fetch('http://192.168.48.99:8088/reactNativeApp/Login!toLogin.action')
+    return fetch(global.webUrl + '/reactNativeApp/Login!toLogin.action')
       .then((response) => {
       		SplashScreen.hide();
       		if(200 === response.status){
@@ -90,7 +90,7 @@ class Home extends Component {
 				}
 				rsa.setPublicString(JSON.stringify(publicKey));
 				var encryptedPwd = rsa.encrypt(MD5('hnrsyw'));
-				fetch('http://192.168.48.99:8088/reactNativeApp/Login!login.action?username=hnrsyw&&password='+encryptedPwd+'').then((response) =>{
+				fetch(global.webUrl + '/reactNativeApp/Login!login.action?username=hnrsyw&&password='+encryptedPwd+'').then((response) =>{
 					if(200 === response.status){
 						data = JSON.parse(response._bodyInit);
 						if('1' === data.status){

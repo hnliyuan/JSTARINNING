@@ -36,7 +36,7 @@ export default class HistoryCurvs extends Component {
 
     componentWillMount() {
         const { pump,meterId,dType } = this.props.navigation.state.params;
-        fetch('http://192.168.48.99:8088/reactNativeApp/DeepSearch!getChartData.action?id='+meterId+'&dType='+dType+'&start='+'20170518'+'&end='+'20170518').then((response) =>{
+        fetch(global.webUrl + '/reactNativeApp/DeepSearch!getChartData.action?id='+meterId+'&dType='+dType+'&start='+'20170518'+'&end='+'20170518').then((response) =>{
             if(response.status === 200){
                 let datas = JSON.parse(response._bodyInit);
                 let filterOption = this.getOption(datas);

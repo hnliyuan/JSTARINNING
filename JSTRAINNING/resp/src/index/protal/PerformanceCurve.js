@@ -301,7 +301,7 @@ export default class PerformanceCurve extends Component {
     componentDidMount() {
 
         pumpId = this.props.pump.title.substring(this.props.pump.title.indexOf('@') + 1,this.props.pump.title.length);
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpRunningDataById.action?pumpId='+pumpId+'').then((response) =>{
+        fetch(global.webUrl + '/reactNativeApp/Search!getPumpRunningDataById.action?pumpId='+pumpId+'').then((response) =>{
             if(200 === response.status){
                 data = JSON.parse(response._bodyInit);
                 this.setState( {

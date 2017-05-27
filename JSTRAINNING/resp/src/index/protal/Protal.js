@@ -38,7 +38,7 @@ class Protal extends Component{
 
     componentDidMount() { // 获取位置
         //发起请求获得当前帐号所有地区的数据
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getAreas.action').then((response) =>{
+        fetch(global.webUrl + '/reactNativeApp/Search!getAreas.action').then((response) =>{
             if(200 === response.status){
             data = JSON.parse(response._bodyInit);
             this.setState({data:data.data});
@@ -67,7 +67,7 @@ class Protal extends Component{
     }
 
     _getAllPumpsByArea = () =>{
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey=0').then((response) =>{
+        fetch(global.webUrl + '/reactNativeApp/Search!getPumpsByArea.action?areaKey=0').then((response) =>{
             if(200 === response.status){
                 data = JSON.parse(response._bodyInit).data;
                 var markers = [];
@@ -100,7 +100,7 @@ class Protal extends Component{
     }
 
     _getPumpsByArea = (option) => {
-        fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey='+option.key+'').then((response) =>{
+        fetch(global.webUrl + '/reactNativeApp/Search!getPumpsByArea.action?areaKey='+option.key+'').then((response) =>{
         if(200 === response.status){
             data = JSON.parse(response._bodyInit).data;
             var markers = [];

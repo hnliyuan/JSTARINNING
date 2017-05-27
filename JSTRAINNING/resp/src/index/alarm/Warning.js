@@ -31,7 +31,7 @@ export default class Warning extends React.PureComponent {
 
 	searchWarning=(startIndex)=>{
 		this.setState({refreshing:true});
-		fetch('http://192.168.48.99:8088/reactNativeApp/DeepSearch!getAlarmJsonDatas.action?alarmLimit='+this.state.limit+'&'+'alarmStart='+startIndex).then((response) =>{
+		fetch(global.webUrl + '/reactNativeApp/DeepSearch!getAlarmJsonDatas.action?alarmLimit='+this.state.limit+'&'+'alarmStart='+startIndex).then((response) =>{
 			if(200 === response.status){
 				data = JSON.parse(response._bodyInit);
 				if(data && data.datas.length>0){
