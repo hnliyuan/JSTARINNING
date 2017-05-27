@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView, TouchableHighlight, Text, StatusBar, WebView,TextInput,Alert } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableHighlight, Text, StatusBar, WebView,TextInput,Alert,ToastAndroid } from 'react-native'
 import Util from '../../util/Util'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {
@@ -31,7 +31,8 @@ class Protal extends Component{
             center:null,
             initValue:'选择省份..',
             pumpData:[],
-            markerClickRecord:{},
+            markerClickRecord:null,
+            pumpIdFinder:[],
         };
     }
 
@@ -54,20 +55,38 @@ class Protal extends Component{
         })
     }
 
+    _pumpIdFinder = (marker) =>{
+        let temp = this.state.pumpIdFinder;
+        for(var i = 0 ; i < temp.length; i++){
+            let m = temp[i];
+            if(m.latitude == marker.position.latitude && m.longitude == marker.position.longitude && m.title == marker.title){
+                return m.id;
+            }
+        }
+        return null;
+    }
+
     _getAllPumpsByArea = () =>{
         fetch('http://192.168.48.99:8088/reactNativeApp/Search!getPumpsByArea.action?areaKey=0').then((response) =>{
             if(200 === response.status){
                 data = JSON.parse(response._bodyInit).data;
                 var markers = [];
-                for(var i = 0 ; i<data.length ; i++){
+                var pumpIdFinder = [];
+                for(var i = 0 ; i<data.length ; i++) {
                     var value = data[i];
                     markers.push({
-                                latitude:value.latitude,
-                                longitude:value.longitude,
-                                title:value.name+'@'+value.id,
+                        latitude: value.latitude,
+                        longitude: value.longitude,
+                        title: value.name,
+                    })
+                    pumpIdFinder.push({
+                        latitude: value.latitude,
+                        longitude: value.longitude,
+                        title: value.name,
+                        id: value.id
                     })
                 }
-                this.setState({pumpData:data,markers:markers})
+                this.setState({pumpData:data,markers:markers,pumpIdFinder:pumpIdFinder})
             }else{
                 Alert.alert(
                     '请求出错',
@@ -85,19 +104,26 @@ class Protal extends Component{
         if(200 === response.status){
             data = JSON.parse(response._bodyInit).data;
             var markers = [];
+            var pumpIdFinder = [];
             for(var i = 0 ; i<data.length ; i++){
             var value = data[i];
                 markers.push({
-                     latitude:value.latitude,
+                    latitude:value.latitude,
                     longitude:value.longitude,
-                    title:value.name+'@'+value.id,
+                    title:value.name,
+                })
+                pumpIdFinder.push({
+                    latitude:value.latitude,
+                    longitude:value.longitude,
+                    title:value.name,
+                    id:value.id
                 })
             }
             var center = {
                 latitude:markers[0].latitude,
                 longitude:markers[0].longitude
             }
-            this.setState({pumpData:data,markers:markers,center:center,zoom:15})
+            this.setState({pumpData:data,markers:markers,center:center,zoom:15,pumpIdFinder:pumpIdFinder})
         }else{
             Alert.alert(
                 '请求出错',
@@ -109,6 +135,15 @@ class Protal extends Component{
             console.error(error);
         })
         this.setState({textInputValue:option.label})
+    }
+
+    _diffMarker =(marker1,marker) =>{
+        if(marker1){
+            if(marker1.position.latitude == marker.position.latitude && marker1.position.longitude == marker.position.longitude && marker1.title == marker.title){
+                return true;
+            }
+        }
+        return false;
     }
 
     render() {
@@ -147,79 +182,81 @@ class Protal extends Component{
         </View>
         <View style={styles.rightBackView}>
 
-<Menu onSelect={(value) => alert(`User selected the number ${value}`)}>
-<MenuTrigger>
-    <Icon
-    name='add-circle'
-    color='white'
-    size={32}
-        />
-        </MenuTrigger>
-        <MenuOptions optionsContainerStyle={{ marginTop:45 ,borderRadius: 10,backgroundColor:'#0b77b2',width:120}}>
-<MenuOption value={1} style={{borderBottomWidth:0.5,borderBottomColor:'white'}}>
-<View style={{flexDirection: 'row'}}>
-<Icon
-    name='search'
-    color='white'
-    size={20}
-        />
-        <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查询水泵</Text>
-    </View>
+            <Menu onSelect={(value) => alert(`User selected the number ${value}`)}>
+            <MenuTrigger>
+                <Icon
+                name='add-circle'
+                color='white'
+                size={32}
+                    />
+                    </MenuTrigger>
+                    <MenuOptions optionsContainerStyle={{ marginTop:45 ,borderRadius: 10,backgroundColor:'#0b77b2',width:120}}>
+            <MenuOption value={1} style={{borderBottomWidth:0.5,borderBottomColor:'white'}}>
+            <View style={{flexDirection: 'row'}}>
+            <Icon
+                name='search'
+                color='white'
+                size={20}
+                    />
+                    <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查询水泵</Text>
+                </View>
 
-    </MenuOption>
-    <MenuOption value={2} style={{borderBottomWidth:0.5,borderBottomColor:'white'}} >
-<View style={{flexDirection: 'row'}}>
-<Icon
-    name='insert-drive-file'
-    color='white'
-    size={20}
-        />
-        <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查看报表</Text>
-    </View>
-    </MenuOption>
-    <MenuOption value={3} style={{}} >
-<View style={{flexDirection: 'row'}}>
-<Icon
-    name='wallpaper'
-    color='white'
-    size={20}
-        />
-        <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>扫一扫</Text>
-    </View>
-    </MenuOption>
-    </MenuOptions>
-    </Menu>
+                </MenuOption>
+                <MenuOption value={2} style={{borderBottomWidth:0.5,borderBottomColor:'white'}} >
+            <View style={{flexDirection: 'row'}}>
+            <Icon
+                name='insert-drive-file'
+                color='white'
+                size={20}
+                    />
+                    <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>查看报表</Text>
+                </View>
+                </MenuOption>
+                <MenuOption value={3} style={{}} >
+            <View style={{flexDirection: 'row'}}>
+            <Icon
+                name='wallpaper'
+                color='white'
+                size={20}
+                    />
+                    <Text style={{fontSize:14,color:'white',textAlign:'center',marginLeft:10}}>扫一扫</Text>
+                </View>
+                </MenuOption>
+                </MenuOptions>
+                </Menu>
 
-    </View>
-    </View>
-    <View style={styles.center}>
-    <MapView
-        trafficEnabled={this.state.trafficEnabled}
-        baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-        zoom={this.state.zoom}
-        mapType={this.state.mapType}
-        center={this.state.center}
-        marker={this.state.marker}
-        markers={this.state.markers}
-        style={styles.map}
-        onMarkerClick={(e)=>{
-
-            if(this.state.markerClickRecord.title === e.title){
-                navigate('Pump',{pump:e});
-            }else{
-                this.setState({markerClickRecord:e})
-            }
-
-        }}
-    >
-</MapView>
-    </View>
-    </View>
-    </MenuContext>
-)
-}
-
-
+                </View>
+                </View>
+                <View style={styles.center}>
+                <MapView
+                    trafficEnabled={this.state.trafficEnabled}
+                    baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                    zoom={this.state.zoom}
+                    mapType={this.state.mapType}
+                    center={this.state.center}
+                    marker={this.state.marker}
+                    markers={this.state.markers}
+                    style={styles.map}
+                    onMarkerClick={(e)=>{
+                        if(this._diffMarker(this.state.markerClickRecord,e)){
+                            let id = this._pumpIdFinder(e);
+                            if(id){
+                                e.title = e.title + '@' + id;
+                                navigate('Pump',{pump:e});
+                            }
+                        }
+                        else{
+                            ToastAndroid.show('重复点击水泵图标进入详情', ToastAndroid.SHORT);
+                            this.setState({markerClickRecord:e})
+                        }
+                    }}
+                >
+            </MapView>
+                </View>
+                </View>
+                </MenuContext>
+        )
+    }
 }
 
 styles = StyleSheet.create({
